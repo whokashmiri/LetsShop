@@ -20,9 +20,9 @@ public class AuthController {
         this.userService = userService;
     }
     @PostMapping("/register")
-    public ResponseEntity<User> create(@Valid  @RequestBody RegisterRequest  registerRequest){
+    public ResponseEntity<String> create(@Valid  @RequestBody RegisterRequest  registerRequest){
        User saved =  userService.register(registerRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Account create successfully");
     }
 
 }
