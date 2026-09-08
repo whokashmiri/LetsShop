@@ -31,6 +31,13 @@ public class OtpVerification {
         this.expiresAt = expiresAt;
     }
 
+    public LocalDateTime getExpiresAt(){
+        return expiresAt;
+    }
+    public boolean isVerified() {
+        return verified;
+    }
+
     public void setVerified(boolean verified) {
         this.verified = verified;
     }

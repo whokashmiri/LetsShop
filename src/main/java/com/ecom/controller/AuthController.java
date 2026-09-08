@@ -2,6 +2,7 @@ package com.ecom.controller;
 
 import com.ecom.dto.RegisterRequest;
 import com.ecom.dto.SendOtpRequest;
+import com.ecom.dto.VerifyOtpRequest;
 import com.ecom.models.OtpVerification;
 import com.ecom.models.User;
 import com.ecom.service.OtpService;
@@ -34,6 +35,12 @@ public class AuthController {
       String otp = otpService.sendOtp(sendOtpRequest.getPhone());
     return  ResponseEntity.ok(otp);
 
+    }
+
+    @PostMapping("/verify-otp")
+    public ResponseEntity<String> verifyOtp(@RequestBody VerifyOtpRequest verifyOtpRequest){
+        otpService.verifyOtp(verifyOtpRequest.getPhone() , verifyOtpRequest.getOtp());
+        return ResponseEntity.ok("OTP Verified");
     }
 
 }

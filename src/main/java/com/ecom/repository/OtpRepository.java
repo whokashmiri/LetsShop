@@ -8,4 +8,5 @@ import java.util.Optional;
 @Repository
 public interface OtpRepository extends MongoRepository<OtpVerification , String > {
   Optional <OtpVerification> findByPhoneAndOtp(String phone , String otp);
+
 }

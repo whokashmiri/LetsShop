@@ -30,14 +30,21 @@ public class OtpService {
        otpRepository.save(otpVerification);
        return otp;
    }
-   public Optional<OtpVerification> verifyOtp(String phone , String otp){
+   public void verifyOtp(String phone , String otp){
        Optional<OtpVerification> otpVerification =  otpRepository.findByPhoneAndOtp(phone , otp);
 
       if (otpVerification.isEmpty()){
          throw new InvalidOtpException("Invalid OTP");
-
       }
-      return otpVerification;
+      if( LocalDateTime.now().isAfter(otpVerification.get().getExpiresAt())){
+          throw new InvalidOtpException("Expired OTP");
+       }
+      if (otpVerification.get().isVerified()) {
+           throw new InvalidOtpException("OTP already verified");
+       }
+       otpVerification.get().setVerified(true);
+     otpRepository.save(otpVerification.get());
+
 
    }
 
