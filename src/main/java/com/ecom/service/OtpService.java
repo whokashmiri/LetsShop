@@ -1,10 +1,12 @@
 package com.ecom.service;
 
+import com.ecom.exceptions.InvalidOtpException;
 import com.ecom.models.OtpVerification;
 import com.ecom.repository.OtpRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.Random;
 
 @Service
@@ -28,4 +30,15 @@ public class OtpService {
        otpRepository.save(otpVerification);
        return otp;
    }
+   public Optional<OtpVerification> verifyOtp(String phone , String otp){
+       Optional<OtpVerification> otpVerification =  otpRepository.findByPhoneAndOtp(phone , otp);
+
+      if (otpVerification.isEmpty()){
+         throw new InvalidOtpException("Invalid OTP");
+
+      }
+      return otpVerification;
+
+   }
+
 }
