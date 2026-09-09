@@ -3,7 +3,9 @@ package com.ecom.service;
 import com.ecom.dto.RegisterRequest;
 import com.ecom.exceptions.EmailAlreadyExistsException;
 import com.ecom.exceptions.PhoneAlreadyExistsException;
+import com.ecom.models.OtpVerification;
 import com.ecom.models.User;
+import com.ecom.repository.OtpRepository;
 import com.ecom.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,10 +19,12 @@ import java.util.List;
 public class UserService {
     private final UserRepository userRepository;
     private  final PasswordEncoder passwordEncoder;
+    private final OtpRepository otpRepository;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder , OtpRepository otpRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.otpRepository = otpRepository;
     }
 
     public User register(RegisterRequest registerRequest) {
