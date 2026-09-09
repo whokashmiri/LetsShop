@@ -2,7 +2,9 @@ package com.ecom.service;
 
 import com.ecom.exceptions.InvalidOtpException;
 import com.ecom.models.OtpVerification;
+import com.ecom.models.User;
 import com.ecom.repository.OtpRepository;
+import com.ecom.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -12,9 +14,13 @@ import java.util.Random;
 @Service
 public class OtpService {
     private final OtpRepository otpRepository;
-    public OtpService (OtpRepository otpRepository){
+    private final UserRepository userRepository;
+
+
+    public OtpService (OtpRepository otpRepository , UserRepository userRepository){
         this.otpRepository = otpRepository;
-   }
+        this.userRepository = userRepository;
+    }
    public String sendOtp(String phone){
        Random random = new Random();
        String otp = String.valueOf(random.nextInt(100000, 1000000));
@@ -42,10 +48,16 @@ public class OtpService {
       if (otpVerification.get().isVerified()) {
            throw new InvalidOtpException("OTP already verified");
        }
-       otpVerification.get().setVerified(true);
-     otpRepository.save(otpVerification.get());
+       Optional<User> user =  userRepository.findByPhone(phone);
+      User existingUser =  user.orElseThrow();
+      existingUser.setPhoneVerified(true);
+        otpVerification.get().setVerified(true);
+        userRepository.save(existingUser);
+        otpRepository.save(otpVerification.get());
+
 
 
    }
+
 
 }
