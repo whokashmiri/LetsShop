@@ -44,11 +44,17 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+    public String getPassword(){
+        return password;
+    }
     public void setEmailVerified(boolean emailVerified) {
         this.emailVerified = emailVerified;
     }
     public void setPhoneVerified(boolean phoneVerified){
         this.phoneVerified = phoneVerified;
+    }
+    public boolean isPhoneVerified(){
+        return phoneVerified;
     }
 
     public void setRoles(List<String> roles){

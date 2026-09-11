@@ -1,5 +1,6 @@
 package com.ecom.controller;
 
+import com.ecom.dto.LoginRequest;
 import com.ecom.dto.RegisterRequest;
 import com.ecom.dto.SendOtpRequest;
 import com.ecom.dto.VerifyOtpRequest;
@@ -10,16 +11,14 @@ import com.ecom.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
     private final UserService userService;
     private final OtpService otpService;
+
 
     public AuthController(UserService userService, OtpService otpService){
         this.userService = userService;
@@ -41,6 +40,12 @@ public class AuthController {
     public ResponseEntity<String> verifyOtp(@RequestBody VerifyOtpRequest verifyOtpRequest){
         otpService.verifyOtp(verifyOtpRequest.getPhone() , verifyOtpRequest.getOtp());
         return ResponseEntity.ok("OTP Verified");
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest){
+        userService.login(loginRequest);
+        return ResponseEntity.ok("Login Successfull");
     }
 
 }
