@@ -6,3 +6,5 @@ spring:
   mongodb:
     database: ${MONGODB_DATABASE:lets-shop}
     uri: ${MONGODB_URI:mongodb+srv://meer1khalifa_db_user:LlJomYQkiWQAncmI@billboard.ydhijvf.mongodb.net/?appName=billboard}
+  jwt:
+    secret: ${SECRET:my-super-secret-key-for-letshop-jwt-2026}

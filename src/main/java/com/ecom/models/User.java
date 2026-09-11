@@ -29,6 +29,11 @@ public class User {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
+
+    public String getId(){
+        return id;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -59,6 +64,9 @@ public class User {
 
     public void setRoles(List<String> roles){
         this.roles =  roles;
+    }
+    public List<String> getRoles(){
+        return roles;
     }
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
