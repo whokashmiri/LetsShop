@@ -3,7 +3,9 @@ package com.ecom.service;
 import com.ecom.dto.LoginRequest;
 import com.ecom.dto.RegisterRequest;
 import com.ecom.exceptions.EmailAlreadyExistsException;
+import com.ecom.exceptions.InvalidCredentialsException;
 import com.ecom.exceptions.PhoneAlreadyExistsException;
+import com.ecom.exceptions.PhoneNotVerifiedException;
 import com.ecom.models.OtpVerification;
 import com.ecom.models.User;
 import com.ecom.repository.OtpRepository;
@@ -58,9 +60,20 @@ public class UserService {
 
 
     public User login(LoginRequest loginRequest){
-        Optional<User> user = userRepository.findByPhone(loginRequest.getPhone()){
-            throw new RuntimeException();
+        Optional<User> user = userRepository.findByPhone(loginRequest.getPhone());
+      String rawPassword =   loginRequest.getPassword();
+
+        if (user.isEmpty()){
+           throw new InvalidCredentialsException("Invalid phone or password");
+        }  if ( !passwordEncoder.matches(rawPassword , user.get().getPassword())){
+           throw new InvalidCredentialsException("Invalid phone or password");
+
         }
+
+        if (!user.get().isPhoneVerified()){
+            throw new PhoneNotVerifiedException("Phone not verified");
+        }
+        return user.get();
 
     }
 }
