@@ -1,5 +1,6 @@
 package com.ecom.service;
 
+import com.ecom.dto.LoginRequest;
 import com.ecom.dto.RegisterRequest;
 import com.ecom.exceptions.EmailAlreadyExistsException;
 import com.ecom.exceptions.PhoneAlreadyExistsException;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -51,6 +53,14 @@ public class UserService {
         return userRepository.save(user);
 
 
+
+    }
+
+
+    public User login(LoginRequest loginRequest){
+        Optional<User> user = userRepository.findByPhone(loginRequest.getPhone()){
+            throw new RuntimeException();
+        }
 
     }
 }
