@@ -25,4 +25,12 @@ public class JwtService{
                 .compact();
 
     }
+
+    public String extractUserId(String token){
+        return Jwts.parser()
+                .verifyWith(Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8)))
+                .build().parseSignedClaims(token)
+                .getPayload()
+                .getSubject();
+    }
 }
