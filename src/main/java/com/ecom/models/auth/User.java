@@ -1,4 +1,4 @@
-package com.ecom.models;
+package com.ecom.models.auth;
 
 
 

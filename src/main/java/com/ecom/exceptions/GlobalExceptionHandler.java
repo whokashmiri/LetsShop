@@ -1,5 +1,6 @@
 package com.ecom.exceptions;
 
+import com.ecom.exceptions.auth.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

@@ -1,6 +1,6 @@
 package com.ecom.service;
 
-import com.ecom.models.User;
+import com.ecom.models.auth.User;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;

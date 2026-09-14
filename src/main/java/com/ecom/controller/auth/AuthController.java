@@ -1,13 +1,13 @@
-package com.ecom.controller;
+package com.ecom.controller.auth;
 
-import com.ecom.dto.LoginRequest;
-import com.ecom.dto.RegisterRequest;
-import com.ecom.dto.SendOtpRequest;
-import com.ecom.dto.VerifyOtpRequest;
-import com.ecom.models.User;
+import com.ecom.dto.auth.LoginRequest;
+import com.ecom.dto.auth.RegisterRequest;
+import com.ecom.dto.auth.SendOtpRequest;
+import com.ecom.dto.auth.VerifyOtpRequest;
+import com.ecom.models.auth.User;
 import com.ecom.service.JwtService;
-import com.ecom.service.OtpService;
-import com.ecom.service.UserService;
+import com.ecom.service.auth.OtpService;
+import com.ecom.service.auth.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
