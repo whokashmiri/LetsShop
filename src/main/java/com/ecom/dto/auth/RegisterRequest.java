@@ -1,9 +1,11 @@
-package com.ecom.dto;
+package com.ecom.dto.auth;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
 
+@Getter
 public class RegisterRequest {
     @NotBlank
     private String name;
@@ -18,22 +20,6 @@ public class RegisterRequest {
     @NotBlank
     @Size(min = 6)
     private String password;
-
-
-    public String getName(){
-        return name;
-    }
-
-    public String getEmail(){
-        return email;
-    }
-
-    public String getPhone(){
-        return phone;
-    }
-    public String getPassword(){
-        return password;
-    }
 
 
 }

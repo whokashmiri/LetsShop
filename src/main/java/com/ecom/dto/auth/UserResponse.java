@@ -1,4 +1,4 @@
-package com.ecom.dto;
+package com.ecom.dto.auth;
 
 import lombok.Getter;
 import lombok.Setter;

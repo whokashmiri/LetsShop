@@ -1,4 +1,4 @@
-package com.ecom.exceptions;
+package com.ecom.exceptions.auth;
 
 public class PhoneNotVerifiedException extends RuntimeException{
     public PhoneNotVerifiedException (String message){

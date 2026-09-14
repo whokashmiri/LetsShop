@@ -1,6 +1,6 @@
-package com.ecom.repository;
+package com.ecom.repository.auth;
 
-import com.ecom.models.User;
+import com.ecom.models.auth.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

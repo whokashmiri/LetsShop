@@ -1,4 +1,4 @@
-package com.ecom.models;
+package com.ecom.models.auth;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;

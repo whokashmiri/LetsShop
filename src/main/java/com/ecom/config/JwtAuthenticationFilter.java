@@ -1,7 +1,7 @@
 package com.ecom.config;
 
 
-import com.ecom.repository.UserRepository;
+import com.ecom.repository.auth.UserRepository;
 import com.ecom.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

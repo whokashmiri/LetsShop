@@ -1,7 +1,7 @@
-package com.ecom.controller;
+package com.ecom.controller.auth;
 
-import com.ecom.dto.UserResponse;
-import com.ecom.models.User;
+import com.ecom.dto.auth.UserResponse;
+import com.ecom.models.auth.User;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,17 +1,14 @@
-package com.ecom.service;
+package com.ecom.service.auth;
 
-import com.ecom.dto.LoginRequest;
-import com.ecom.dto.RegisterRequest;
-import com.ecom.exceptions.EmailAlreadyExistsException;
-import com.ecom.exceptions.InvalidCredentialsException;
-import com.ecom.exceptions.PhoneAlreadyExistsException;
-import com.ecom.exceptions.PhoneNotVerifiedException;
-import com.ecom.models.OtpVerification;
-import com.ecom.models.User;
-import com.ecom.repository.OtpRepository;
-import com.ecom.repository.UserRepository;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import com.ecom.dto.auth.LoginRequest;
+import com.ecom.dto.auth.RegisterRequest;
+import com.ecom.exceptions.auth.EmailAlreadyExistsException;
+import com.ecom.exceptions.auth.InvalidCredentialsException;
+import com.ecom.exceptions.auth.PhoneAlreadyExistsException;
+import com.ecom.exceptions.auth.PhoneNotVerifiedException;
+import com.ecom.models.auth.User;
+import com.ecom.repository.auth.OtpRepository;
+import com.ecom.repository.auth.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

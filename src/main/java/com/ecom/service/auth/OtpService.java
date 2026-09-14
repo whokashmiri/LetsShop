@@ -1,10 +1,10 @@
-package com.ecom.service;
+package com.ecom.service.auth;
 
-import com.ecom.exceptions.InvalidOtpException;
-import com.ecom.models.OtpVerification;
-import com.ecom.models.User;
-import com.ecom.repository.OtpRepository;
-import com.ecom.repository.UserRepository;
+import com.ecom.exceptions.auth.InvalidOtpException;
+import com.ecom.models.auth.OtpVerification;
+import com.ecom.models.auth.User;
+import com.ecom.repository.auth.OtpRepository;
+import com.ecom.repository.auth.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
