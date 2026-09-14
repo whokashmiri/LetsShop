@@ -1,6 +1,8 @@
 package com.ecom.models.product;
 
+
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
@@ -12,16 +14,19 @@ import java.util.List;
 
 @Getter
 @Setter
-@Document(collection = "product")
+
 public class Product {
     @Id
     private String id;
 
     private String name;
     private String category;
+
     private BigDecimal price;
     private String description;
+
     private int quantity;
+
     private String brand;
     private List<String> images;
     private LocalDateTime createdAt;
