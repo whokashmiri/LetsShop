@@ -1,6 +1,7 @@
 package com.ecom.exceptions;
 
 import com.ecom.exceptions.auth.*;
+import com.ecom.exceptions.product.ProductNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -35,5 +36,10 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(phoneAlreadyExistsException.getMessage());
     }
 
+
+    @ExceptionHandler(ProductNotFoundException.class)
+    public ResponseEntity<String> handleProductNotFoundException(ProductNotFoundException productNotFoundException){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(productNotFoundException.getMessage());
+    }
 
 }
