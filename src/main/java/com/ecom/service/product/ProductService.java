@@ -5,9 +5,12 @@ import com.ecom.dto.product.ProductResponse;
 import com.ecom.exceptions.product.ProductNotFoundException;
 import com.ecom.models.product.Product;
 import com.ecom.repository.product.ProductRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -72,5 +75,28 @@ public class ProductService {
     productResponse.setCreatedAt(savedProduct.getCreatedAt());
     return productResponse;
 
+    }
+
+    public List<ProductResponse> getProducts(){
+      List<Product> products =   productRepository.findAll();
+      if (products.isEmpty()){
+          throw new ProductNotFoundException("No Products");
+      }
+    List<ProductResponse> productResponseList = new ArrayList<>();
+      for(Product product :  products){
+          ProductResponse productResponse =  new ProductResponse();
+          productResponse.setId(product.getId());
+          productResponse.setName(product.getName());
+          productResponse.setBrand(product.getBrand());
+          productResponse.setCategory(product.getCategory());
+          productResponse.setPrice(product.getPrice());
+          productResponse.setQuantity(product.getQuantity());
+          productResponse.setDescription(product.getDescription());
+          productResponse.setImages(product.getImages());
+          productResponse.setUpdatedAt(product.getUpdatedAt());
+          productResponse.setCreatedAt(product.getCreatedAt());
+          productResponseList.add(productResponse);
+      }
+      return productResponseList;
     }
 }
