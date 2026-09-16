@@ -14,22 +14,41 @@ import java.util.Optional;
 public class ProductService {
 
     private final ProductRepository productRepository;
-    public ProductService (ProductRepository productRepository){
+
+
+    public ProductService (ProductRepository productRepository ){
         this.productRepository = productRepository;
+
+
     }
-    public Product createProduct(ProductRequest productRequest){
+    public ProductResponse createProduct(ProductRequest productRequest){
         Product product = new Product();
-       product.setName(productRequest.getName());
-       product.setBrand(productRequest.getBrand());
-       product.setCategory( productRequest.getCategory());
-       product.setDescription(productRequest.getDescription());
-       product.setPrice(productRequest.getPrice());
-       product.setQuantity(productRequest.getQuantity());
-       product.setImages(productRequest.getImages());
+        product.setName(productRequest.getName());
+        product.setBrand(productRequest.getBrand());
+        product.setCategory( productRequest.getCategory());
+        product.setDescription(productRequest.getDescription());
+        product.setPrice(productRequest.getPrice());
+        product.setQuantity(productRequest.getQuantity());
+        product.setImages(productRequest.getImages());
        LocalDateTime now = LocalDateTime.now();
-       product.setUpdatedAt(now);
-       product.setCreatedAt(now);
-       return  productRepository.save(product);
+        product.setUpdatedAt(now);
+        product.setCreatedAt(now);
+        Product savedProduct = productRepository.save(product);
+
+        ProductResponse response = new ProductResponse();
+
+        response.setId(savedProduct.getId());
+        response.setName(savedProduct.getName());
+        response.setBrand(savedProduct.getBrand());
+        response.setCategory(savedProduct.getCategory());
+        response.setDescription(savedProduct.getDescription());
+        response.setPrice(savedProduct.getPrice());
+        response.setQuantity(savedProduct.getQuantity());
+        response.setImages(savedProduct.getImages());
+        response.setCreatedAt(savedProduct.getCreatedAt());
+        response.setUpdatedAt(savedProduct.getUpdatedAt());
+
+        return response;
 
 
     }
