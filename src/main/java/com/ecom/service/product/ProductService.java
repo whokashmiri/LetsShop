@@ -2,6 +2,7 @@ package com.ecom.service.product;
 
 import com.ecom.dto.product.ProductRequest;
 import com.ecom.dto.product.ProductResponse;
+import com.ecom.exceptions.product.CategoryNotFoundException;
 import com.ecom.exceptions.product.ProductNotFoundException;
 import com.ecom.models.product.Product;
 import com.ecom.repository.product.ProductRepository;
@@ -122,5 +123,28 @@ public class ProductService {
      }
 
      return productResponseList;
+    }
+
+    public List<ProductResponse> getProductsByCategory(String category){
+        List<Product> products = productRepository.findProductByCategory(category);
+        if (products.isEmpty()){
+            throw new CategoryNotFoundException("Invalid Category");
+        }
+        List<ProductResponse> productResponseList = new ArrayList<>();
+        for (Product product : products){
+            ProductResponse productResponse = new ProductResponse();
+            productResponse.setId(product.getId());
+            productResponse.setName(product.getName());
+            productResponse.setBrand(product.getBrand());
+            productResponse.setCategory(product.getCategory());
+            productResponse.setPrice(product.getPrice());
+            productResponse.setQuantity(product.getQuantity());
+            productResponse.setDescription(product.getDescription());
+            productResponse.setImages(product.getImages());
+            productResponse.setUpdatedAt(product.getUpdatedAt());
+            productResponse.setCreatedAt(product.getCreatedAt());
+            productResponseList.add(productResponse);
+        }
+        return productResponseList;
     }
 }

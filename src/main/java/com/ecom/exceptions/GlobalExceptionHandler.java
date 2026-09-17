@@ -1,6 +1,7 @@
 package com.ecom.exceptions;
 
 import com.ecom.exceptions.auth.*;
+import com.ecom.exceptions.product.CategoryNotFoundException;
 import com.ecom.exceptions.product.ProductNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,6 +41,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ProductNotFoundException.class)
     public ResponseEntity<String> handleProductNotFoundException(ProductNotFoundException productNotFoundException){
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(productNotFoundException.getMessage());
+    }
+    @ExceptionHandler(CategoryNotFoundException.class)
+    public ResponseEntity<String> handleCategoryNotFoundException(CategoryNotFoundException categoryNotFoundException){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(categoryNotFoundException.getMessage());
     }
 
 }
