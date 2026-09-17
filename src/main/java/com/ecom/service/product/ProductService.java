@@ -99,4 +99,28 @@ public class ProductService {
       }
       return productResponseList;
     }
+
+    public List<ProductResponse> getProductByName(String name){
+     List<Product> products =  productRepository.findByNameContainingIgnoreCase(name);
+     if (products.isEmpty()){
+         throw  new ProductNotFoundException("No product with this name");
+     }
+     List<ProductResponse> productResponseList = new ArrayList<>();
+     for (Product product :products){
+         ProductResponse productResponse =new ProductResponse();
+         productResponse.setId(product.getId());
+         productResponse.setName(product.getName());
+         productResponse.setBrand(product.getBrand());
+         productResponse.setCategory(product.getCategory());
+         productResponse.setPrice(product.getPrice());
+         productResponse.setQuantity(product.getQuantity());
+         productResponse.setDescription(product.getDescription());
+         productResponse.setImages(product.getImages());
+         productResponse.setUpdatedAt(product.getUpdatedAt());
+         productResponse.setCreatedAt(product.getCreatedAt());
+         productResponseList.add(productResponse);
+     }
+
+     return productResponseList;
+    }
 }

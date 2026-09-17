@@ -1,0 +1,1 @@
+eJavaletshop log --all --format\=-h\ \|\ -an\ \|\ -ae\ \|\ -ad --date\=short
