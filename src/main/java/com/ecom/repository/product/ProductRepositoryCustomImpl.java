@@ -3,6 +3,7 @@ package com.ecom.repository.product;
 import com.ecom.models.product.Product;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 
 import java.util.List;
 
@@ -20,6 +21,7 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
         Criteria criteria = new Criteria();
         criteria.and("category").is(category);
         criteria.and("brand").is(brand);
-        return null;
+        Query query = new Query(criteria);
+        return mongoTemplate.find(query , Product.class);
     }
 }
