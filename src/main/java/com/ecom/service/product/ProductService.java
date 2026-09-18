@@ -9,6 +9,7 @@ import com.ecom.repository.product.ProductRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -146,5 +147,29 @@ public class ProductService {
             productResponseList.add(productResponse);
         }
         return productResponseList;
+    }
+
+    public List<ProductResponse> getProductsByCategoryAndBrand(String category , String brand , BigDecimal minPrice , BigDecimal maxPrice ,String sort){
+       List<Product> products = productRepository.findProductsByCategoryAndBrand(category, brand, minPrice, maxPrice ,sort);
+       if (products.isEmpty()){
+           throw new ProductNotFoundException("Change Filters");
+       }
+       List<ProductResponse> productResponseList = new ArrayList<>();
+       for ( Product product : products){
+           ProductResponse productResponse = new ProductResponse();
+           productResponse.setId(product.getId());
+           productResponse.setName(product.getName());
+           productResponse.setBrand(product.getBrand());
+           productResponse.setCategory(product.getCategory());
+           productResponse.setPrice(product.getPrice());
+           productResponse.setQuantity(product.getQuantity());
+           productResponse.setDescription(product.getDescription());
+           productResponse.setImages(product.getImages());
+           productResponse.setUpdatedAt(product.getUpdatedAt());
+           productResponse.setCreatedAt(product.getCreatedAt());
+           productResponseList.add(productResponse);
+       }
+
+       return productResponseList;
     }
 }
