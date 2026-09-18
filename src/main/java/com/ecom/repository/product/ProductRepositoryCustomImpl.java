@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
@@ -19,7 +20,7 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
 
 
     @Override
-    public List<Product> findProductsByCategoryAndBrand(String category, String brand , BigDecimal minPrice , BigDecimal maxPrice , String sort) {
+    public List<Product> findProductsByCategoryAndBrand(String category, String brand , BigDecimal minPrice , BigDecimal maxPrice , String sort ) {
         Criteria criteria = new Criteria();
         criteria.and("category").is(category);
         criteria.and("brand").is(brand);
@@ -27,12 +28,15 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
         criteria.and("price").lte(maxPrice);
         Query query = new Query(criteria);
 
-        if (sort.equals("price_asc")){
-            query.with(Sort.by(Sort.Direction.ASC , "price"));
-        } if (sort.equals("price_dsc")){
-            query.with(Sort.by(Sort.Direction.DESC , "price"));
+        if (sort.equals("price_asc")) {
+            query.with(Sort.by(Sort.Direction.ASC, "price"));
+        } else if (sort.equals("price_desc")) {
+            query.with(Sort.by(Sort.Direction.DESC, "price"));
+        } else if (sort.equals("newest")) {
+            query.with(Sort.by(Sort.Direction.DESC, "createdAt"));
+        } else if (sort.equals("oldest")) {
+            query.with(Sort.by(Sort.Direction.ASC, "createdAt"));
         }
-
         return mongoTemplate.find(query , Product.class);
     }
 }

@@ -149,8 +149,8 @@ public class ProductService {
         return productResponseList;
     }
 
-    public List<ProductResponse> getProductsByCategoryAndBrand(String category , String brand , BigDecimal minPrice , BigDecimal maxPrice ,String sort){
-       List<Product> products = productRepository.findProductsByCategoryAndBrand(category, brand, minPrice, maxPrice ,sort);
+    public List<ProductResponse> getProductsByCategoryAndBrand(String category , String brand , BigDecimal minPrice , BigDecimal maxPrice ,String sort ){
+       List<Product> products = productRepository.findProductsByCategoryAndBrand(category, brand, minPrice, maxPrice ,sort );
        if (products.isEmpty()){
            throw new ProductNotFoundException("Change Filters");
        }
