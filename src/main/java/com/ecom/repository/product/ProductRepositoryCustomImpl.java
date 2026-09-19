@@ -22,10 +22,19 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
     @Override
     public List<Product> findProductsByCategoryAndBrand(String category, String brand , BigDecimal minPrice , BigDecimal maxPrice , String sort ) {
         Criteria criteria = new Criteria();
-        criteria.and("category").is(category);
-        criteria.and("brand").is(brand);
-        criteria.and("price").gte(minPrice).lte(maxPrice);
+        if (category != null && category.isBlank() ){
+            criteria.and("category").is(category);
+        }
+        if(brand != null && brand.isBlank()){
+            criteria.and("brand").is(brand);
+        }
+        if (minPrice != null) {
+            criteria.and("price").gte(minPrice);
+        }
 
+        if (maxPrice != null) {
+            criteria.and("price").lte(maxPrice);
+        }
         Query query = new Query(criteria);
 
         if ("price_asc".equals(sort)) {
