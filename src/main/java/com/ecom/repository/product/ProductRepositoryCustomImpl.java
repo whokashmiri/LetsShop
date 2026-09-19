@@ -24,17 +24,17 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
         Criteria criteria = new Criteria();
         criteria.and("category").is(category);
         criteria.and("brand").is(brand);
-        criteria.and("price").gte(minPrice);
-        criteria.and("price").lte(maxPrice);
+        criteria.and("price").gte(minPrice).lte(maxPrice);
+
         Query query = new Query(criteria);
 
-        if (sort.equals("price_asc")) {
+        if ("price_asc".equals(sort)) {
             query.with(Sort.by(Sort.Direction.ASC, "price"));
-        } else if (sort.equals("price_desc")) {
+        } else if ("price_desc".equals(sort)) {
             query.with(Sort.by(Sort.Direction.DESC, "price"));
-        } else if (sort.equals("newest")) {
+        } else if ("newest".equals(sort)) {
             query.with(Sort.by(Sort.Direction.DESC, "createdAt"));
-        } else if (sort.equals("oldest")) {
+        } else if ("oldest".equals(sort)) {
             query.with(Sort.by(Sort.Direction.ASC, "createdAt"));
         }
         return mongoTemplate.find(query , Product.class);

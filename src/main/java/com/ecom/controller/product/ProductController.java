@@ -56,11 +56,11 @@ public class ProductController {
     }
     @GetMapping("/filter")
     public ResponseEntity<List<ProductResponse>> filterProducts(
-            @RequestParam String category,
-            @RequestParam String brand,
-            @RequestParam BigDecimal minPrice,
-            @RequestParam BigDecimal maxPrice,
-            @RequestParam String sort
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) String brand,
+            @RequestParam(required = false) BigDecimal minPrice,
+            @RequestParam(required = false) BigDecimal maxPrice,
+            @RequestParam(required = false) String sort
     ){
         List<ProductResponse> productResponseList = productService.getProductsByCategoryAndBrand(category , brand , minPrice , maxPrice ,sort);
         return ResponseEntity.ok(productResponseList);
