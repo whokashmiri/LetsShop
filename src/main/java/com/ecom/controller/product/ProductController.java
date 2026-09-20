@@ -7,6 +7,7 @@ import com.ecom.dto.product.ProductResponse;
 import com.ecom.service.product.ProductService;
 
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -55,7 +56,7 @@ public class ProductController {
         return ResponseEntity.ok(productResponseList);
     }
     @GetMapping("/filter")
-    public ResponseEntity<List<ProductResponse>> filterProducts(
+    public ResponseEntity<Page<ProductResponse>> filterProducts(
             @RequestParam(required = false) String category,
             @RequestParam(required = false) String brand,
             @RequestParam(required = false) BigDecimal minPrice,
@@ -64,7 +65,7 @@ public class ProductController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
     ) {
-        List<ProductResponse> productResponseList =
+        Page<ProductResponse> productResponseList =
                 productService.getProductsByCategoryAndBrand(
                         category,
                         brand,

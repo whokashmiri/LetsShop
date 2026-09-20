@@ -6,14 +6,19 @@ import com.ecom.exceptions.product.CategoryNotFoundException;
 import com.ecom.exceptions.product.ProductNotFoundException;
 import com.ecom.models.product.Product;
 import com.ecom.repository.product.ProductRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
 @Service
 public class ProductService {
@@ -149,27 +154,45 @@ public class ProductService {
         return productResponseList;
     }
 
-    public List<ProductResponse> getProductsByCategoryAndBrand(String category , String brand , BigDecimal minPrice , BigDecimal maxPrice ,String sort , int page , int size ){
-       List<Product> products = productRepository.findProductsByCategoryAndBrand(category, brand, minPrice, maxPrice ,sort , page , size);
-       if (products.isEmpty()){
-           throw new ProductNotFoundException("Change Filters");
-       }
-       List<ProductResponse> productResponseList = new ArrayList<>();
-       for ( Product product : products){
-           ProductResponse productResponse = new ProductResponse();
-           productResponse.setId(product.getId());
-           productResponse.setName(product.getName());
-           productResponse.setBrand(product.getBrand());
-           productResponse.setCategory(product.getCategory());
-           productResponse.setPrice(product.getPrice());
-           productResponse.setQuantity(product.getQuantity());
-           productResponse.setDescription(product.getDescription());
-           productResponse.setImages(product.getImages());
-           productResponse.setUpdatedAt(product.getUpdatedAt());
-           productResponse.setCreatedAt(product.getCreatedAt());
-           productResponseList.add(productResponse);
-       }
+    public Page<ProductResponse> getProductsByCategoryAndBrand(
+            String category,
+            String brand,
+            BigDecimal minPrice,
+            BigDecimal maxPrice,
+            String sort,
+            int page,
+            int size) {
 
-       return productResponseList;
+        Page<Product> products =
+                productRepository.findProductsByCategoryAndBrand(
+                        category,
+                        brand,
+                        minPrice,
+                        maxPrice,
+                        sort,
+                        page,
+                        size
+                );
+
+        if (products.isEmpty()) {
+            throw new ProductNotFoundException("Change Filters");
+        }
+
+        return products.map(product -> {
+            ProductResponse response = new ProductResponse();
+
+            response.setId(product.getId());
+            response.setName(product.getName());
+            response.setBrand(product.getBrand());
+            response.setCategory(product.getCategory());
+            response.setPrice(product.getPrice());
+            response.setQuantity(product.getQuantity());
+            response.setDescription(product.getDescription());
+            response.setImages(product.getImages());
+            response.setUpdatedAt(product.getUpdatedAt());
+            response.setCreatedAt(product.getCreatedAt());
+
+            return response;
+        });
     }
 }

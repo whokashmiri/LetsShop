@@ -1,15 +1,12 @@
 package com.ecom.repository.product;
 
 import com.ecom.models.product.Product;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
 
 public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
@@ -22,7 +19,7 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
 
 
     @Override
-    public List<Product> findProductsByCategoryAndBrand(String category, String brand , BigDecimal minPrice , BigDecimal maxPrice , String sort  , int page , int size ) {
+    public Page<Product> findProductsByCategoryAndBrand(String category, String brand , BigDecimal minPrice , BigDecimal maxPrice , String sort  , int page , int size ) {
         Criteria criteria = new Criteria();
         if (category != null && !category.isBlank() ){
             criteria.and("category").is(category);
@@ -38,6 +35,7 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
             criteria.and("price").lte(maxPrice);
         }
         Query query = new Query(criteria);
+        long totalElements = mongoTemplate.count(query , Product.class);
 
         if ("price_asc".equals(sort)) {
             query.with(Sort.by(Sort.Direction.ASC, "price"));
@@ -48,8 +46,10 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
         } else if ("oldest".equals(sort)) {
             query.with(Sort.by(Sort.Direction.ASC, "createdAt"));
         }
+
         Pageable pageable = PageRequest.of(page,size);
         query.with(pageable);
-        return mongoTemplate.find(query , Product.class);
+        List<Product> products =  mongoTemplate.find(query , Product.class);
+        return new PageImpl<>(products ,pageable ,totalElements );
     }
 }
