@@ -1,6 +1,8 @@
 package com.ecom.repository.product;
 
 import com.ecom.models.product.Product;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -20,12 +22,12 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
 
 
     @Override
-    public List<Product> findProductsByCategoryAndBrand(String category, String brand , BigDecimal minPrice , BigDecimal maxPrice , String sort ) {
+    public List<Product> findProductsByCategoryAndBrand(String category, String brand , BigDecimal minPrice , BigDecimal maxPrice , String sort  , int page , int size ) {
         Criteria criteria = new Criteria();
-        if (category != null && category.isBlank() ){
+        if (category != null && !category.isBlank() ){
             criteria.and("category").is(category);
         }
-        if(brand != null && brand.isBlank()){
+        if(brand != null && !brand.isBlank()){
             criteria.and("brand").is(brand);
         }
         if (minPrice != null) {
@@ -46,6 +48,8 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
         } else if ("oldest".equals(sort)) {
             query.with(Sort.by(Sort.Direction.ASC, "createdAt"));
         }
+        Pageable pageable = PageRequest.of(page,size);
+        query.with(pageable);
         return mongoTemplate.find(query , Product.class);
     }
 }

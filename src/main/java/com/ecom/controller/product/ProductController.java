@@ -60,9 +60,21 @@ public class ProductController {
             @RequestParam(required = false) String brand,
             @RequestParam(required = false) BigDecimal minPrice,
             @RequestParam(required = false) BigDecimal maxPrice,
-            @RequestParam(required = false) String sort
-    ){
-        List<ProductResponse> productResponseList = productService.getProductsByCategoryAndBrand(category , brand , minPrice , maxPrice ,sort);
+            @RequestParam(required = false) String sort,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        List<ProductResponse> productResponseList =
+                productService.getProductsByCategoryAndBrand(
+                        category,
+                        brand,
+                        minPrice,
+                        maxPrice,
+                        sort,
+                        page,
+                        size
+                );
+
         return ResponseEntity.ok(productResponseList);
     }
 
