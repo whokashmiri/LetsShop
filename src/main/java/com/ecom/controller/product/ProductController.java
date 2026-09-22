@@ -4,6 +4,7 @@ package com.ecom.controller.product;
 import com.ecom.dto.product.ProductRequest;
 
 import com.ecom.dto.product.ProductResponse;
+import com.ecom.models.category.Category;
 import com.ecom.service.product.ProductService;
 
 import jakarta.validation.Valid;
@@ -51,7 +52,7 @@ public class ProductController {
       return ResponseEntity.ok(productResponseList);
     }
     @GetMapping("/category")
-    public ResponseEntity<List<ProductResponse>> searchByCategory(@RequestParam String category){
+    public ResponseEntity<List<ProductResponse>> searchByCategory(@RequestParam Category category){
         List<ProductResponse> productResponseList = productService.getProductsByCategory(category);
         return ResponseEntity.ok(productResponseList);
     }

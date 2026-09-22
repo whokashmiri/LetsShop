@@ -1,5 +1,6 @@
 package com.ecom.dto.product;
 
+import com.ecom.models.category.Category;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -17,7 +18,7 @@ public class ProductResponse {
     @NotBlank
     private String name;
 
-    private String category;
+    private Category category;
 
     @NotNull
     @Positive

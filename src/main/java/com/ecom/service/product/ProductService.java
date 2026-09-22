@@ -4,6 +4,7 @@ import com.ecom.dto.product.ProductRequest;
 import com.ecom.dto.product.ProductResponse;
 import com.ecom.exceptions.product.CategoryNotFoundException;
 import com.ecom.exceptions.product.ProductNotFoundException;
+import com.ecom.models.category.Category;
 import com.ecom.models.product.Product;
 import com.ecom.repository.product.ProductRepository;
 import org.springframework.data.domain.Page;
@@ -131,7 +132,7 @@ public class ProductService {
      return productResponseList;
     }
 
-    public List<ProductResponse> getProductsByCategory(String category){
+    public List<ProductResponse> getProductsByCategory(Category category){
         List<Product> products = productRepository.findProductByCategory(category);
         if (products.isEmpty()){
             throw new CategoryNotFoundException("Invalid Category");

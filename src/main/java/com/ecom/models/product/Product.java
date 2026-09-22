@@ -1,6 +1,7 @@
 package com.ecom.models.product;
 
 
+import com.ecom.models.category.Category;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import lombok.Getter;
@@ -20,7 +21,7 @@ public class Product {
     private String id;
 
     private String name;
-    private String category;
+    private Category category;
 
     private BigDecimal price;
     private String description;
