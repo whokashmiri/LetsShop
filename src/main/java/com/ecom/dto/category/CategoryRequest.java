@@ -1,18 +1,16 @@
 package com.ecom.dto.category;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.annotation.Id;
-
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
 public class CategoryRequest {
-
+    @NotBlank
     private String name;
+    @NotBlank
     private String description;
     private String parentId;
-    private boolean active;
 
 }
