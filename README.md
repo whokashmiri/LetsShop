@@ -80,7 +80,7 @@ Payment
 ```
 
 ```
- Address
+Address
 ├── id
 ├── userId
 ├── firstName

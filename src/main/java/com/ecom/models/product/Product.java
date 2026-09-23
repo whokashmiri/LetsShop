@@ -15,7 +15,7 @@ import java.util.List;
 
 @Getter
 @Setter
-
+@Document("products")
 public class Product {
     @Id
     private String id;
