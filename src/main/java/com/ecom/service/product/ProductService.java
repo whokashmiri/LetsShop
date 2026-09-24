@@ -41,7 +41,7 @@ public class ProductService {
         product.setPrice(productRequest.getPrice());
         product.setQuantity(productRequest.getQuantity());
         product.setImages(productRequest.getImages());
-       LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now();
         product.setUpdatedAt(now);
         product.setCreatedAt(now);
         Product savedProduct = productRepository.save(product);
