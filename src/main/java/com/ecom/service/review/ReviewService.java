@@ -54,7 +54,6 @@ public class ReviewService {
     public ReviewResponse createReviewOfProduct(
             String productId,
             ReviewRequest reviewRequest) {
-        System.out.println("Product ID received: [" + productId + "]");
         Product product = productRepository.findById(productId)
                 .orElseThrow(() ->
                         new ProductNotFoundException("No product found"));
