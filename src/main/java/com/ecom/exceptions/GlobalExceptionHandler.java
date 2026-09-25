@@ -3,6 +3,7 @@ package com.ecom.exceptions;
 import com.ecom.exceptions.auth.*;
 import com.ecom.exceptions.product.CategoryNotFoundException;
 import com.ecom.exceptions.product.ProductNotFoundException;
+import com.ecom.exceptions.review.ReviewAlreadyExistsException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -47,6 +48,10 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(categoryNotFoundException.getMessage());
     }
 
+    @ExceptionHandler(ReviewAlreadyExistsException.class)
+    public ResponseEntity<String> handleReviewAlreadyExistsException(ReviewAlreadyExistsException reviewAlreadyExistsException){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(reviewAlreadyExistsException.getMessage());
+    }
 
 
 }

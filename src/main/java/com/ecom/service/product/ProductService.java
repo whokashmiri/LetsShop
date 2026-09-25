@@ -36,7 +36,7 @@ public class ProductService {
         Product product = new Product();
         product.setName(productRequest.getName());
         product.setBrand(productRequest.getBrand());
-        product.setCategory( productRequest.getCategory());
+        product.setCategoryId( productRequest.getCategoryId());
         product.setDescription(productRequest.getDescription());
         product.setPrice(productRequest.getPrice());
         product.setQuantity(productRequest.getQuantity());
@@ -51,7 +51,7 @@ public class ProductService {
         response.setId(savedProduct.getId());
         response.setName(savedProduct.getName());
         response.setBrand(savedProduct.getBrand());
-        response.setCategory(savedProduct.getCategory());
+        response.setCategoryId(savedProduct.getCategoryId());
         response.setDescription(savedProduct.getDescription());
         response.setPrice(savedProduct.getPrice());
         response.setQuantity(savedProduct.getQuantity());
@@ -74,7 +74,7 @@ public class ProductService {
     productResponse.setId(savedProduct.getId());
     productResponse.setName(savedProduct.getName());
     productResponse.setBrand(savedProduct.getBrand());
-    productResponse.setCategory(savedProduct.getCategory());
+    productResponse.setCategoryId(savedProduct.getCategoryId());
     productResponse.setPrice(savedProduct.getPrice());
     productResponse.setQuantity(savedProduct.getQuantity());
     productResponse.setDescription(savedProduct.getDescription());
@@ -96,7 +96,7 @@ public class ProductService {
           productResponse.setId(product.getId());
           productResponse.setName(product.getName());
           productResponse.setBrand(product.getBrand());
-          productResponse.setCategory(product.getCategory());
+          productResponse.setCategoryId(product.getCategoryId());
           productResponse.setPrice(product.getPrice());
           productResponse.setQuantity(product.getQuantity());
           productResponse.setDescription(product.getDescription());
@@ -119,7 +119,7 @@ public class ProductService {
          productResponse.setId(product.getId());
          productResponse.setName(product.getName());
          productResponse.setBrand(product.getBrand());
-         productResponse.setCategory(product.getCategory());
+         productResponse.setCategoryId(product.getCategoryId());
          productResponse.setPrice(product.getPrice());
          productResponse.setQuantity(product.getQuantity());
          productResponse.setDescription(product.getDescription());
@@ -132,8 +132,8 @@ public class ProductService {
      return productResponseList;
     }
 
-    public List<ProductResponse> getProductsByCategory(Category category){
-        List<Product> products = productRepository.findProductByCategory(category);
+    public List<ProductResponse> getProductsByCategory(String categoryId){
+        List<Product> products = productRepository.findProductByCategoryId(categoryId);
         if (products.isEmpty()){
             throw new CategoryNotFoundException("Invalid Category");
         }
@@ -143,7 +143,7 @@ public class ProductService {
             productResponse.setId(product.getId());
             productResponse.setName(product.getName());
             productResponse.setBrand(product.getBrand());
-            productResponse.setCategory(product.getCategory());
+            productResponse.setCategoryId(product.getCategoryId());
             productResponse.setPrice(product.getPrice());
             productResponse.setQuantity(product.getQuantity());
             productResponse.setDescription(product.getDescription());
@@ -185,7 +185,7 @@ public class ProductService {
             response.setId(product.getId());
             response.setName(product.getName());
             response.setBrand(product.getBrand());
-            response.setCategory(product.getCategory());
+            response.setCategoryId(product.getCategoryId());
             response.setPrice(product.getPrice());
             response.setQuantity(product.getQuantity());
             response.setDescription(product.getDescription());

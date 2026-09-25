@@ -52,8 +52,8 @@ public class ProductController {
       return ResponseEntity.ok(productResponseList);
     }
     @GetMapping("/category")
-    public ResponseEntity<List<ProductResponse>> searchByCategory(@RequestParam Category category){
-        List<ProductResponse> productResponseList = productService.getProductsByCategory(category);
+    public ResponseEntity<List<ProductResponse>> searchByCategory(@RequestParam String categoryId){
+        List<ProductResponse> productResponseList = productService.getProductsByCategory(categoryId);
         return ResponseEntity.ok(productResponseList);
     }
     @GetMapping("/filter")

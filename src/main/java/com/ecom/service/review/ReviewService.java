@@ -3,6 +3,7 @@ package com.ecom.service.review;
 import com.ecom.dto.review.ReviewRequest;
 import com.ecom.dto.review.ReviewResponse;
 import com.ecom.exceptions.product.ProductNotFoundException;
+import com.ecom.exceptions.review.ReviewAlreadyExistsException;
 import com.ecom.models.auth.User;
 import com.ecom.models.product.Product;
 import com.ecom.models.review.Review;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -66,6 +68,11 @@ public class ReviewService {
         }
 
       User user = (User)  authentication.getPrincipal();
+
+        Optional<Review> existingReview = reviewRepository.findByProductIdAndUserId(productId , user.getId());
+        if (existingReview.isPresent()){
+            throw new ReviewAlreadyExistsException("Already reviewed");
+        }
 
         Review review = new Review();
 

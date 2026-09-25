@@ -18,7 +18,7 @@ public class ProductResponse {
     @NotBlank
     private String name;
 
-    private Category category;
+    private String categoryId;
 
     @NotNull
     @Positive
