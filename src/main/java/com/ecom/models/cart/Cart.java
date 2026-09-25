@@ -10,7 +10,7 @@ import java.util.List;
 
 @Getter
 @Setter
-@Document("cart")
+@Document("carts")
 public class Cart {
     @Id
     private String id;

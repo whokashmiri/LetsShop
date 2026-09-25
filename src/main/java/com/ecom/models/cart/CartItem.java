@@ -8,13 +8,10 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@Document("cart")
 public class CartItem {
-    @Id
-    private String id;
-    private String cartId;
+
+
     private String productId;
     private Integer quantity;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+
 }
