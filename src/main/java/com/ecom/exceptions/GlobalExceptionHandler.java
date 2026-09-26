@@ -1,6 +1,7 @@
 package com.ecom.exceptions;
 
 import com.ecom.exceptions.auth.*;
+import com.ecom.exceptions.product.CartQuantityExceededException;
 import com.ecom.exceptions.product.CategoryNotFoundException;
 import com.ecom.exceptions.product.ProductNotFoundException;
 import com.ecom.exceptions.review.ReviewAlreadyExistsException;
@@ -55,6 +56,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UserNotAuthenticatedException.class)
     public ResponseEntity<String> handleUserNotAuthenticatedException(UserNotAuthenticatedException userNotAuthenticatedException){
         return  ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(userNotAuthenticatedException.getMessage());
+    }
+    @ExceptionHandler(CartQuantityExceededException.class)
+    public ResponseEntity<String> handleCartQuantityExceededException(CartQuantityExceededException cartQuantityExceededException){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(cartQuantityExceededException.getMessage());
     }
 
 

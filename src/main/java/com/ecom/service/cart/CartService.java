@@ -4,6 +4,7 @@ import com.ecom.dto.cart.CartItemRequest;
 import com.ecom.dto.cart.CartItemResponse;
 import com.ecom.dto.cart.CartResponse;
 import com.ecom.exceptions.auth.UserNotAuthenticatedException;
+import com.ecom.exceptions.product.CartQuantityExceededException;
 import com.ecom.exceptions.product.ProductNotFoundException;
 import com.ecom.models.auth.User;
 import com.ecom.models.cart.Cart;
@@ -25,7 +26,7 @@ import java.util.Optional;
 public class CartService {
 
     private final CartRepository cartRepository;
-    public final ProductRepository productRepository;
+    private final ProductRepository productRepository;
 
     public CartService(CartRepository cartRepository , ProductRepository productRepository) {
         this.cartRepository = cartRepository;
@@ -54,7 +55,7 @@ public class CartService {
          cart.setUpdatedAt(now);
      }
 
-      productRepository.findById(cartItemRequest.getProductId()).orElseThrow(() ->
+    Product product =  productRepository.findById(cartItemRequest.getProductId()).orElseThrow(() ->
              new ProductNotFoundException("Product not Found"));
 
      CartItem existingItem = null;
@@ -65,10 +66,23 @@ public class CartService {
 
          }
      }
+        int requestedQuantity = cartItemRequest.getQuantity();
          if (existingItem != null){
-             existingItem.setQuantity(existingItem.getQuantity() + cartItemRequest.getQuantity());
+            int finalQuantity =  existingItem.getQuantity() + requestedQuantity;
 
-         }else {
+            if (finalQuantity > product.getQuantity()){
+                throw new CartQuantityExceededException("Cart quantity exceeded product quantity");
+            }
+            existingItem.setQuantity(finalQuantity);
+
+         }
+ else {
+
+             if (requestedQuantity > product.getQuantity()) {
+                 throw new CartQuantityExceededException(
+                         "Cart item quantity exceeds available product quantity"
+                 );
+             }
 
              CartItem cartItem = new CartItem();
              cartItem.setProductId(cartItemRequest.getProductId());
