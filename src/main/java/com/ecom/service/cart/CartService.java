@@ -120,5 +120,58 @@ public class CartService {
 
     }
 
+
+    public CartResponse removeSingleItemFromCart(String productId){
+       Authentication authentication =  SecurityContextHolder.getContext().getAuthentication();
+       if (authentication == null || !(authentication.getPrincipal() instanceof  User)){
+           throw new UserNotAuthenticatedException("User Not Authenticated");
+       }
+      User user = (User) authentication.getPrincipal();
+      String userId =  user.getId();
+       Optional<Cart>  cartOptional =  cartRepository.findByUserId(userId);
+     if (cartOptional.isEmpty()){
+         throw new RuntimeException("Cart not present");
+     }
+     Cart cart = cartOptional.get();
+
+     CartItem itemToRemove = null;
+
+     for (CartItem item : cart.getCartItems()){
+         if (item.getProductId().equals(productId)) {
+
+             itemToRemove = item;
+             break;
+         }
+     }
+
+     if(itemToRemove == null){
+         throw  new ProductNotFoundException("Product not found in the cart");
+     }
+     cart.getCartItems().remove(itemToRemove);
+     cart.setUpdatedAt(LocalDateTime.now());
+
+     Cart savedCart = cartRepository.save(cart);
+
+     CartResponse cartResponse = new CartResponse();
+     cartResponse.setId(savedCart.getId());
+     cartResponse.setUpdatedAt(savedCart.getUpdatedAt());
+     cartResponse.setUpdatedAt(savedCart.getUpdatedAt());
+
+
+     List<CartItemResponse> cartItemResponses = new ArrayList<>();
+    for ( CartItem cartItem : savedCart.getCartItems()){
+        CartItemResponse cartItemResponse = new CartItemResponse();
+        cartItemResponse.setProductId(cartItem.getProductId());
+        cartItemResponse.setQuantity(cartItem.getQuantity());
+
+        cartItemResponses.add(cartItemResponse);
+    }
+    cartResponse.setCartItems(cartItemResponses);
+    return cartResponse;
+
+
+
+    }
+
 }
 

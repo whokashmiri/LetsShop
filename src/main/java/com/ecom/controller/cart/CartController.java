@@ -20,4 +20,10 @@ public class CartController {
      return ResponseEntity.ok(cartResponse);
 
     }
+
+    @PatchMapping
+    public ResponseEntity<CartResponse> removeSingleItem(String productId){
+        CartResponse cartResponse = cartService.removeSingleItemFromCart(productId);
+        return ResponseEntity.ok(cartResponse);
+    }
 }
