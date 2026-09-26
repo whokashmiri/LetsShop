@@ -54,18 +54,34 @@ public class CartService {
          cart.setUpdatedAt(now);
      }
 
-     productRepository.findById(cartItemRequest.getProductId()).orElseThrow(() ->
+      productRepository.findById(cartItemRequest.getProductId()).orElseThrow(() ->
              new ProductNotFoundException("Product not Found"));
 
+     CartItem existingItem = null;
+     for (CartItem item : cart.getCartItems()){
+         if (item.getProductId().equals(cartItemRequest.getProductId())){
+             existingItem = item;
+             break;
 
-        CartItem cartItem = new CartItem();
-     cartItem.setProductId(cartItemRequest.getProductId());
-     cartItem.setQuantity(cartItemRequest.getQuantity());
+         }
+     }
+         if (existingItem != null){
+             existingItem.setQuantity(existingItem.getQuantity() + cartItemRequest.getQuantity());
+
+         }else {
+
+             CartItem cartItem = new CartItem();
+             cartItem.setProductId(cartItemRequest.getProductId());
+             cartItem.setQuantity(cartItemRequest.getQuantity());
 
 
-     cart.getCartItems().add(cartItem);
+             cart.getCartItems().add(cartItem);
 
-     cart.setUpdatedAt(LocalDateTime.now());
+         }
+
+
+        cart.setUpdatedAt(LocalDateTime.now());
+
 
      Cart savedCart = cartRepository.save(cart);
 
