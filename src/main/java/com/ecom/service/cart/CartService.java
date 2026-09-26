@@ -3,9 +3,16 @@ package com.ecom.service.cart;
 import com.ecom.dto.cart.CartItemRequest;
 import com.ecom.dto.cart.CartItemResponse;
 import com.ecom.dto.cart.CartResponse;
+import com.ecom.exceptions.auth.UserNotAuthenticatedException;
+import com.ecom.exceptions.product.ProductNotFoundException;
+import com.ecom.models.auth.User;
 import com.ecom.models.cart.Cart;
 import com.ecom.models.cart.CartItem;
+import com.ecom.models.product.Product;
 import com.ecom.repository.cart.CartRepository;
+import com.ecom.repository.product.ProductRepository;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -18,13 +25,22 @@ import java.util.Optional;
 public class CartService {
 
     private final CartRepository cartRepository;
+    public final ProductRepository productRepository;
 
-    public CartService(CartRepository cartRepository) {
+    public CartService(CartRepository cartRepository , ProductRepository productRepository) {
         this.cartRepository = cartRepository;
+        this.productRepository = productRepository;
     }
 
 
-    public CartResponse addItemToCart(String userId , CartItemRequest cartItemRequest){
+    public CartResponse addItemToCart(CartItemRequest cartItemRequest){
+
+      Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+      if (authentication == null || !(authentication.getPrincipal() instanceof User)){
+          throw new UserNotAuthenticatedException("User not authenticated");
+      }
+     User user = (User) authentication.getPrincipal();
+      String userId = user.getId();
 
      Optional <Cart> cartOptional =  cartRepository.findByUserId(userId);
      Cart cart = new Cart();
@@ -37,6 +53,10 @@ public class CartService {
          cart.setCreatedAt(now);
          cart.setUpdatedAt(now);
      }
+
+     productRepository.findById(cartItemRequest.getProductId()).orElseThrow(() ->
+             new ProductNotFoundException("Product not Found"));
+
 
         CartItem cartItem = new CartItem();
      cartItem.setProductId(cartItemRequest.getProductId());

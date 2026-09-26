@@ -52,6 +52,10 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleReviewAlreadyExistsException(ReviewAlreadyExistsException reviewAlreadyExistsException){
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(reviewAlreadyExistsException.getMessage());
     }
+    @ExceptionHandler(UserNotAuthenticatedException.class)
+    public ResponseEntity<String> handleUserNotAuthenticatedException(UserNotAuthenticatedException userNotAuthenticatedException){
+        return  ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(userNotAuthenticatedException.getMessage());
+    }
 
 
 }
