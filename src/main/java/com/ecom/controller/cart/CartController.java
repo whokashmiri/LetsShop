@@ -26,4 +26,15 @@ public class CartController {
         CartResponse cartResponse = cartService.removeSingleItemFromCart(productId);
         return ResponseEntity.ok(cartResponse);
     }
+
+    @PatchMapping("/+")
+    public ResponseEntity<CartResponse> increaseQuantity(String productId){
+     CartResponse cartResponse =    cartService.increaseQuantity(productId);
+     return ResponseEntity.ok(cartResponse);
+    }
+    @PatchMapping("/-")
+    public ResponseEntity<CartResponse> decreaseQuantity(String productId){
+        CartResponse cartResponse =    cartService.increaseQuantity(productId);
+        return ResponseEntity.ok(cartResponse);
+    }
 }
