@@ -168,9 +168,111 @@ public class CartService {
     }
     cartResponse.setCartItems(cartItemResponses);
     return cartResponse;
+    }
+
+    public CartResponse increaseQuantity(String productId){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null || !(authentication.getPrincipal() instanceof  User)){
+            throw new UserNotAuthenticatedException("User not authenticated");
+        }
+       User user = (User) authentication.getPrincipal();
+       String userId =  user.getId();
+
+      Optional<Cart> cartOptional =  cartRepository.findByUserId(userId);
+      if (cartOptional.isEmpty()){
+          throw new RuntimeException("Cart not available");
+      }
+
+      Cart cart = cartOptional.get();
+      CartItem itemToUpdate  = null;
+
+      for (CartItem item : cart.getCartItems()){
+          if(item.getProductId().equals(productId)){
+              itemToUpdate  =  item;
+            break;
+          }
+      }
+
+        if (itemToUpdate == null) {
+            throw new ProductNotFoundException("product not found in the cart");
+        }
+        itemToUpdate.setQuantity(itemToUpdate.getQuantity() + 1);
+        cart.setUpdatedAt(LocalDateTime.now());
+        Cart savedCart = cartRepository.save(cart);
+
+        CartResponse cartResponse = new CartResponse();
+        cartResponse.setId(savedCart.getId());
+        cartResponse.setCreatedAt(savedCart.getCreatedAt());
+        cartResponse.setUpdatedAt(savedCart.getUpdatedAt());
+
+        List<CartItemResponse> cartItemResponses = new ArrayList<>();
+
+        for (CartItem item : savedCart.getCartItems()){
+
+            CartItemResponse cartItemResponse = new CartItemResponse();
+            cartItemResponse.setProductId(item.getProductId());
+            cartItemResponse.setQuantity(item.getQuantity());
+
+            cartItemResponses.add(cartItemResponse);
+
+        }
+        cartResponse.setCartItems(cartItemResponses);
+        return cartResponse;
+    }
 
 
+    public  CartResponse decreaseQuantity(String productId){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !(authentication.getPrincipal() instanceof  User)){
+            throw new UserNotAuthenticatedException("User not authenticated");
+        }
+        User user = (User) authentication.getPrincipal();
+        String userId = user.getId();
 
+        Optional<Cart> cartOptional =  cartRepository.findByUserId(userId);
+        if (cartOptional.isEmpty()){
+            throw new RuntimeException("Cart not present ");
+        }
+        Cart cart = cartOptional.get();
+        CartItem itemToUpdate = null;
+
+        for (CartItem item : cart.getCartItems()){
+            if (item.getProductId().equals(productId)){
+                itemToUpdate =  item;
+                break;
+            }
+        }
+
+        if (itemToUpdate == null){
+            throw new ProductNotFoundException("Product not found");
+        }
+        if (itemToUpdate.getQuantity() > 1){
+            itemToUpdate.setQuantity(itemToUpdate.getQuantity() -  1);
+        }
+        else {
+            cart.getCartItems().remove(itemToUpdate);
+        }
+        cart.setUpdatedAt(LocalDateTime.now());
+        Cart savedCart = cartRepository.save(cart);
+
+
+        CartResponse cartResponse = new CartResponse();
+        cartResponse.setId(savedCart.getId());
+        cart.setUpdatedAt(savedCart.getUpdatedAt());
+        cart.setCreatedAt(savedCart.getCreatedAt());
+
+        List<CartItemResponse> cartItemResponses = new ArrayList<>();
+
+        for (CartItem item :  savedCart.getCartItems()){
+            CartItemResponse cartItemResponse = new CartItemResponse();
+            cartItemResponse.setProductId(item.getProductId());
+            cartItemResponse.setQuantity(item.getQuantity());
+
+            cartItemResponses.add(cartItemResponse);
+        }
+        cartResponse.setCartItems(cartItemResponses);
+       return cartResponse;
     }
 
 }
