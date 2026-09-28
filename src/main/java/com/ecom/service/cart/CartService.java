@@ -259,8 +259,8 @@ public class CartService {
 
         CartResponse cartResponse = new CartResponse();
         cartResponse.setId(savedCart.getId());
-        cart.setUpdatedAt(savedCart.getUpdatedAt());
-        cart.setCreatedAt(savedCart.getCreatedAt());
+        cartResponse.setUpdatedAt(savedCart.getUpdatedAt());
+        cartResponse.setCreatedAt(savedCart.getCreatedAt());
 
         List<CartItemResponse> cartItemResponses = new ArrayList<>();
 

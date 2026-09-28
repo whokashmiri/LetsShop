@@ -21,20 +21,20 @@ public class CartController {
 
     }
 
-    @PatchMapping
-    public ResponseEntity<CartResponse> removeSingleItem(String productId){
+    @DeleteMapping("/item")
+    public ResponseEntity<CartResponse> removeSingleItem(@RequestParam  String productId){
         CartResponse cartResponse = cartService.removeSingleItemFromCart(productId);
         return ResponseEntity.ok(cartResponse);
     }
 
-    @PatchMapping("/+")
-    public ResponseEntity<CartResponse> increaseQuantity(String productId){
+    @PatchMapping("/increase")
+    public ResponseEntity<CartResponse> increaseQuantity(@RequestParam String productId){
      CartResponse cartResponse =    cartService.increaseQuantity(productId);
      return ResponseEntity.ok(cartResponse);
     }
-    @PatchMapping("/-")
-    public ResponseEntity<CartResponse> decreaseQuantity(String productId){
-        CartResponse cartResponse =    cartService.increaseQuantity(productId);
+    @PatchMapping("/decrease")
+    public ResponseEntity<CartResponse> decreaseQuantity(@RequestParam String productId){
+        CartResponse cartResponse =    cartService.decreaseQuantity(productId);
         return ResponseEntity.ok(cartResponse);
     }
 }
