@@ -142,20 +142,20 @@ public class OrderService {
          orderResponse.setId(order.getId());
          orderResponse.setUserId(order.getUserId());
          orderResponse.setOrderItemList(order.getOrderItemList());
-        orderResponse.setAddress(order.getAddress());
+         orderResponse.setAddress(order.getAddress());
          orderResponse.setTotalAmount(order.getTotalAmount());
-        orderResponse.setPaymentStatus(order.getPaymentStatus());
-        orderResponse.setOrderStatus(order.getOrderStatus());
-        orderResponse.setOrderStatus(order.getOrderStatus());
+         orderResponse.setPaymentStatus(order.getPaymentStatus());
+         orderResponse.setOrderStatus(order.getOrderStatus());
+         orderResponse.setOrderStatus(order.getOrderStatus());
          orderResponse.setUpdatedAt(order.getUpdatedAt());
          orderResponseList.add(orderResponse);
      }
      return orderResponseList;
 
-
-
-
     }
+
+
+
 
 
 
