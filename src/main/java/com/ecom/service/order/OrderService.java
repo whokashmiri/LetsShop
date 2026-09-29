@@ -4,6 +4,7 @@ import com.ecom.dto.order.OrderResponse;
 import com.ecom.dto.order.OrderItemRequest;
 import com.ecom.dto.order.OrderRequest;
 import com.ecom.exceptions.auth.UserNotAuthenticatedException;
+import com.ecom.exceptions.order.OrderNotFoundException;
 import com.ecom.exceptions.product.CartQuantityExceededException;
 import com.ecom.exceptions.product.ProductNotFoundException;
 import com.ecom.models.auth.User;
@@ -130,7 +131,7 @@ public class OrderService {
      List<Order> orderList =   orderRepository.findByUserId(userId);
 
      if (orderList.isEmpty()){
-         throw new RuntimeException("Please Order first");
+         throw new OrderNotFoundException("Please Order first");
      }
      List<OrderResponse> orderResponseList = new ArrayList<>();
 

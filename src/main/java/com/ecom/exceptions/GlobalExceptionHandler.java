@@ -1,6 +1,7 @@
 package com.ecom.exceptions;
 
 import com.ecom.exceptions.auth.*;
+import com.ecom.exceptions.order.OrderNotFoundException;
 import com.ecom.exceptions.product.CartQuantityExceededException;
 import com.ecom.exceptions.product.CategoryNotFoundException;
 import com.ecom.exceptions.product.ProductNotFoundException;
@@ -62,5 +63,9 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(cartQuantityExceededException.getMessage());
     }
 
+    @ExceptionHandler(OrderNotFoundException.class)
+    public ResponseEntity<String> handleOrderNotFoundException(OrderNotFoundException orderNotFoundException){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(orderNotFoundException.getMessage());
+    }
 
 }
