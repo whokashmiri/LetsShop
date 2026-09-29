@@ -117,4 +117,45 @@ public class OrderService {
 
 
 
+    public List<OrderResponse> getOrders(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null || !((authentication.getPrincipal()) instanceof  User)){
+            throw new UserNotAuthenticatedException("User not Authenticated");
+        }
+
+        User user  = (User) authentication.getPrincipal();
+        String userId = user.getId();
+
+     List<Order> orderList =   orderRepository.findByUserId(userId);
+
+     if (orderList.isEmpty()){
+         throw new RuntimeException("Please Order first");
+     }
+     List<OrderResponse> orderResponseList = new ArrayList<>();
+
+     for (Order order :  orderList){
+
+         OrderResponse orderResponse = new OrderResponse();
+
+         orderResponse.setId(order.getId());
+         orderResponse.setUserId(order.getUserId());
+         orderResponse.setOrderItemList(order.getOrderItemList());
+        orderResponse.setAddress(order.getAddress());
+         orderResponse.setTotalAmount(order.getTotalAmount());
+        orderResponse.setPaymentStatus(order.getPaymentStatus());
+        orderResponse.setOrderStatus(order.getOrderStatus());
+        orderResponse.setOrderStatus(order.getOrderStatus());
+         orderResponse.setUpdatedAt(order.getUpdatedAt());
+         orderResponseList.add(orderResponse);
+     }
+     return orderResponseList;
+
+
+
+
+    }
+
+
+
 }
