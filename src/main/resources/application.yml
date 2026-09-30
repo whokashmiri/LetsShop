@@ -8,6 +8,20 @@ spring:
     uri: ${MONGODB_URI:mongodb+srv://meer1khalifa_db_user:LlJomYQkiWQAncmI@billboard.ydhijvf.mongodb.net/?appName=billboard}
   jwt:
     secret: ${SECRET:my-super-secret-key-for-letshop-jwt-2026}
+  moyasar:
+
+    # Never commit a real secret key. Set MOYASAR_SECRET_KEY as an
+    # environment variable in every real environment.
+    secret-key: ${MOYASAR_SECRET_KEY:sk_test_cCAkyQQ6bDPVrosibnKjxVp5BizYux7jD6Rnz3WS}
+    publishable-key: ${MOYASAR_PULISHABLE_KEY:pk_live_puEL2qwmvBkXWBa2DfkoLSt5aQKpgN26s85ivQHD}
+    base-url: https://api.moyasar.com/v1
+    # Public URL Moyasar should redirect/notify back to after payment.
+    # Must be reachable from the internet (e.g. via ngrok in local dev).
+    callback-url: ${MOYASAR_CALLBACK_URL:https://xxxx.ngrok-free.app/api/billboard/webhook}
+    #  success-url: ${MOYASAR_SUCCESS_URL:http://localhost:8080/api/billboard
+    success-url: ${MOYASAR_SUCCESS_URL:http://localhost:5173/api/billboard}
+  #  MOYASAR_CALLBACK_URL=https://xxxx.ngrok-free.app/api/billboard/webhook
+  #  MOYASAR_SUCCESS_URL=http://localhost:5173
 logging:
     level:
       org.springframework.security: DEBUG
