@@ -15,8 +15,8 @@ public class CategoryController {
     public CategoryController(CategoryService categoryService){
         this.categoryService = categoryService;
     }
-    @GetMapping("/get-category")
-    public ResponseEntity<List<CategoryResponse>> getCategory(@RequestParam String parentId){
+    @GetMapping("/get-category/{parentId}")
+    public ResponseEntity<List<CategoryResponse>> getCategory(@PathVariable String parentId){
       List<CategoryResponse> categoryResponseList =  categoryService.getCategoryByParentId(parentId);
       return ResponseEntity.ok(categoryResponseList);
 
