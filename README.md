@@ -26,7 +26,7 @@ Otp
 └── createdAt
 ```
 
-````
+```
 Product
 ├── id
 ├── name
@@ -38,7 +38,7 @@ Product
 ├── active
 ├── createdAt
 └── updatedAt
-
+```
 ```
 Cart
 ├── id
@@ -102,4 +102,4 @@ Category
 ├── parentId
 ├── updatedAt
 └── createdAt
-``
+```
