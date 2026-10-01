@@ -17,7 +17,7 @@ public class PaymentService {
     private final MoyasarConfig moyasarConfig;
 
     private PaymentService(RestClient.Builder restClientBuilder , MoyasarConfig moyasarConfig){
-        this.restClient = restClientBuilder.baseUrl(moyasarConfig.getBaselUrl()).build();
+        this.restClient = restClientBuilder.baseUrl(moyasarConfig.getBaseUrl()).build();
         this.moyasarConfig = moyasarConfig;
     }
 

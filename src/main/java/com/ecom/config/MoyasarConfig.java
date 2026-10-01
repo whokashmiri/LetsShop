@@ -15,5 +15,6 @@ public class MoyasarConfig {
     private String secretKey;
 
     @Value("${moyasar.base-url}")
-    private String baselUrl;
+    private String baseUrl;
 }
+

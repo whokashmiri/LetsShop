@@ -1,0 +1,27 @@
+package com.ecom.controller.payment;
+
+import com.ecom.dto.payment.MoyasarPaymentRequest;
+import com.ecom.dto.payment.MoyasarPaymentResponse;
+import com.ecom.service.payment.PaymentService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/api/payment")
+public class PaymentController {
+    private  final PaymentService paymentService;
+
+    public PaymentController (PaymentService paymentService){
+        this.paymentService = paymentService;
+    }
+
+    @PostMapping("test")
+    public ResponseEntity<MoyasarPaymentResponse> testReponse(@RequestBody
+                                                              MoyasarPaymentRequest paymentRequest ){
+         MoyasarPaymentResponse paymentResponse = paymentService.createPayment(paymentRequest);
+         return ResponseEntity.ok(paymentResponse);
+    }
+}
