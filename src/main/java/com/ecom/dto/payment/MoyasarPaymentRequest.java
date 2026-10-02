@@ -9,12 +9,13 @@ import lombok.Setter;
 public class MoyasarPaymentRequest {
     private Integer amount ;
     private String description;
+    private String currency;
 
     @JsonProperty("callback_url")
-    private String callBackUrl;
+    private String callbackUrl;
 
     @JsonProperty("given_id")
-    private String given;
+    private String givenId;
 
     private MoyasarPaymentSource source;
 }
