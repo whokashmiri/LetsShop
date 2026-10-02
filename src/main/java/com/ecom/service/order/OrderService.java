@@ -146,7 +146,7 @@ public class OrderService {
          orderResponse.setTotalAmount(order.getTotalAmount());
          orderResponse.setPaymentStatus(order.getPaymentStatus());
          orderResponse.setOrderStatus(order.getOrderStatus());
-         orderResponse.setOrderStatus(order.getOrderStatus());
+         orderResponse.setCreatedAt(order.getCreatedAt());
          orderResponse.setUpdatedAt(order.getUpdatedAt());
          orderResponseList.add(orderResponse);
      }
