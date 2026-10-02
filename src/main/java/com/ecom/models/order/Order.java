@@ -20,6 +20,7 @@ public class Order {
     private String address;
     private BigDecimal totalAmount;
     private PaymentStatus paymentStatus;
+    private String moyasarPaymentId;
     private OrderStatus orderStatus;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

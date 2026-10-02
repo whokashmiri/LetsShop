@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
@@ -75,7 +76,7 @@ public class PaymentService {
         source.setToken(paymentRequest.getToken());
         moyasarPaymentRequest.setSource(source);
 
-        return restClient.post().uri("/payments")
+        MoyasarPaymentResponse response = restClient.post().uri("/payments")
                 .contentType(MediaType.APPLICATION_JSON)
                 .headers(headers ->
                         headers.setBasicAuth(
@@ -85,6 +86,11 @@ public class PaymentService {
                 .body(moyasarPaymentRequest)
                 .retrieve()
                 .body(MoyasarPaymentResponse.class);
+
+        order.setMoyasarPaymentId(response.getId());
+        order.setUpdatedAt(LocalDateTime.now());
+        orderRepository.save(order);
+        return response;
     }
 
 
