@@ -4,6 +4,8 @@ package com.ecom.service.redis;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
+
 @Service
 public class RedisService {
 
@@ -19,5 +21,12 @@ public class RedisService {
 
     public String getValue(String key){
         return stringRedisTemplate.opsForValue().get(key);
+    }
+    public void setValueWithExpiry(String key , String value , Duration duration){
+        stringRedisTemplate.opsForValue().set(key, value , duration);
+    }
+
+    public void deleteValue(String key){
+        stringRedisTemplate.delete(key);
     }
 }
