@@ -12,6 +12,11 @@ spring:
   jwt:
     secret: ${SECRET}
     expiration: ${JWT_EXPIRATION}
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
 
 moyasar:
   base-url: https://api.moyasar.com/v1
