@@ -731,6 +731,7 @@ Planned improvements include:
 | Payment Verification   | ✅      |
 | Stock Reduction        | ✅      |
 | Cart Cleanup           | ✅      |
+| Redis                  | ✅     |
 | Admin Order Management | 🚧     |
 | Wishlist               | 🚧     |
 | Coupons                | 🚧     |
@@ -763,6 +764,7 @@ This project was built to gain practical experience with:
 * External API integration
 * Secure configuration
 * Git/GitHub
+* Redis
 
 ---
 
