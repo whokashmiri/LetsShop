@@ -1,12 +1,11 @@
 package com.ecom.dto.auth;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Setter
+@Getter
 public class SendOtpRequest {
   private   String phone;
 
-    public void setPhone( String phone){
-        this.phone = phone;
-    }
-    public String getPhone(){
-        return phone;
-    }
 }

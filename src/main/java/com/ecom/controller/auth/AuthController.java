@@ -6,6 +6,7 @@ import com.ecom.dto.auth.SendOtpRequest;
 import com.ecom.dto.auth.VerifyOtpRequest;
 import com.ecom.models.auth.User;
 import com.ecom.service.JwtService;
+import com.ecom.service.auth.AuthenticaService;
 import com.ecom.service.auth.OtpService;
 import com.ecom.service.auth.UserService;
 import jakarta.validation.Valid;
@@ -19,12 +20,18 @@ public class AuthController {
     private final UserService userService;
     private final OtpService otpService;
     private final JwtService jwtService;
+    private final AuthenticaService authenticaService;
 
 
-    public AuthController(UserService userService, OtpService otpService , JwtService jwtService){
+    public AuthController(UserService userService,
+                          OtpService otpService ,
+                          JwtService jwtService,
+                          AuthenticaService authenticaService
+    ){
         this.userService = userService;
         this.otpService = otpService;
         this.jwtService = jwtService;
+        this.authenticaService = authenticaService;
     }
     @PostMapping("/register")
     public ResponseEntity<String> create(@Valid  @RequestBody RegisterRequest  registerRequest){
@@ -32,15 +39,15 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.CREATED).body("Account create successfully");
     }
     @PostMapping("/send-otp")
-    public ResponseEntity<String> sendOtp(@RequestBody SendOtpRequest sendOtpRequest){
-      String otp = otpService.sendOtp(sendOtpRequest.getPhone());
-    return  ResponseEntity.ok(otp);
+    public void sendOtp(@RequestBody SendOtpRequest sendOtpRequest){
+       authenticaService.sendOtp(sendOtpRequest.getPhone());
+//    return  ResponseEntity.ok(otp);
 
     }
 
     @PostMapping("/verify-otp")
     public ResponseEntity<String> verifyOtp(@RequestBody VerifyOtpRequest verifyOtpRequest){
-        otpService.verifyOtp(verifyOtpRequest.getPhone() , verifyOtpRequest.getOtp());
+        authenticaService.verifyOtp(verifyOtpRequest.getPhone() , verifyOtpRequest.getOtp());
         return ResponseEntity.ok("OTP Verified");
     }
 

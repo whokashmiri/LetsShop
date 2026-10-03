@@ -27,9 +27,9 @@ public class RedisTestConfig {
 
             String phone = "+966501234567";
 
-            String otp = otpService.sendOtp(phone);
+//            String otp = otpService.sendOtp(phone);
 
-            System.out.println("Generated OTP: " + otp);
+//            System.out.println("Generated OTP: " + otp);
         };
     }
 }

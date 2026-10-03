@@ -18,36 +18,25 @@ import java.util.Random;
 public class OtpService {
     private final RedisService redisService;
     private final UserRepository userRepository;
+    private final AuthenticaService authenticaService;
 
 
-    public OtpService ( RedisService redisService , UserRepository userRepository){
+    public OtpService ( RedisService redisService , UserRepository userRepository , AuthenticaService authenticaService){
         this.redisService = redisService;
         this.userRepository = userRepository;
+        this.authenticaService = authenticaService;
     }
-   public String sendOtp(String phone){
-       Random random = new Random();
-       String otp = String.valueOf(random.nextInt(100000, 1000000));
-       String key =  "otp:phone:" + phone;
-
-       redisService.setValueWithExpiry(key , otp , Duration.ofMinutes(5));
-       return otp;
+   public void sendOtp(String phone){
+      authenticaService.sendOtp(phone);
    }
    public void verifyOtp(String phone , String otp){
-      String key = "otp:phone:" +phone;
-      String storedOtp =  redisService.getValue(key);
-      if (storedOtp == null ){
-          throw new InvalidOtpException("Invalid or expired Otp ");
-      }
-
-      if (storedOtp.equals(otp)){
-          throw new InvalidOtpException("Invalid Otp");
-      }
+   authenticaService.verifyOtp(phone , otp);
 
        Optional<User> user = userRepository.findByPhone(phone);
       User existingUser = user.orElseThrow();
       existingUser.setPhoneVerified(true);
       userRepository.save(existingUser);
-      redisService.deleteValue(key);
+;
 
 
 

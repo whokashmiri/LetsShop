@@ -17,6 +17,9 @@ spring:
       host: localhost
       port: 6379
 
+authentica:
+  api-key: ${AUTHENTICA_API_KEY}
+
 
 moyasar:
   base-url: https://api.moyasar.com/v1
