@@ -17,7 +17,7 @@ moyasar:
   base-url: https://api.moyasar.com/v1
   secret-key: ${MOYASAR_SECRET_KEY}
   publishable-key: ${MOYASAR_PUBLISHABLE_KEY}
-
+  callback-url: https://example.com/payment/callback
 logging:
   level:
     org.springframework.security: DEBUG

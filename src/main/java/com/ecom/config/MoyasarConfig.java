@@ -16,5 +16,8 @@ public class MoyasarConfig {
 
     @Value("${moyasar.base-url}")
     private String baseUrl;
+
+    @Value("${moyasar.callback-url}")
+    private String callbackUrl;
 }
 

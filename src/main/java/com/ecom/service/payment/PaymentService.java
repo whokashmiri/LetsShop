@@ -85,7 +85,7 @@ public class PaymentService {
         moyasarPaymentRequest.setAmount(amount);
         moyasarPaymentRequest.setCurrency("SAR");
         moyasarPaymentRequest.setDescription("LetsShop Order " + order.getId());
-        moyasarPaymentRequest.setCallbackUrl("https://example.com/payment/callback");
+        moyasarPaymentRequest.setCallbackUrl(moyasarConfig.getCallbackUrl());
         moyasarPaymentRequest.setGivenId(UUID.randomUUID().toString());
 
         MoyasarPaymentSource source = new MoyasarPaymentSource();
