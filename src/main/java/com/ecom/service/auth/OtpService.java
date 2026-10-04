@@ -19,6 +19,14 @@ public class OtpService {
     private final AuthenticaService authenticaService;
     private final UserService userService;
 
+    private static final  String COOLDOWN_PREFIX = "otp:cooldown";
+    private static final String RATE_LIMIT_PREFIX = "otp:rate-limit";
+
+    private static final Duration OTP_COOLDOWN = Duration.ofSeconds(60);
+    private static  final Duration RATE_LIMIT_WINDOW = Duration.ofHours(1);
+
+    private static final int MAX_OTP_REQUESTS = 5;
+
     public OtpService(
             RedisService redisService,
             UserRepository userRepository,
@@ -44,6 +52,22 @@ public class OtpService {
             );
         }
 
+        String cooldownKey = COOLDOWN_PREFIX  +  phone;
+        if (redisService.hasKey(cooldownKey)){
+            throw new IllegalStateException("Please wait before requesting another OTP");
+        }
+
+        String rateLimitKey = RATE_LIMIT_PREFIX  + phone;
+       Long requestCount = redisService.incrementValue(rateLimitKey);
+
+       if (requestCount ==  1){
+           redisService.setValueWithExpiry(rateLimitKey , "1" , RATE_LIMIT_WINDOW);
+       }
+
+       if (requestCount > MAX_OTP_REQUESTS){
+           throw  new IllegalStateException("Too many OTP request, Please try after some time");
+       }
+
         PendingSignup pendingSignup =
                 userService.pendingSignup(sendOtpRequest);
 
@@ -56,6 +80,9 @@ public class OtpService {
         );
 
         authenticaService.sendOtp(phone);
+        redisService.setValueWithExpiry(
+                cooldownKey, "1" , OTP_COOLDOWN
+        );
     }
 
     public void verifyOtp(String phone, String otp) {

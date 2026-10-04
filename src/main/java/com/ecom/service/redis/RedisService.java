@@ -35,6 +35,14 @@ public class RedisService {
         stringRedisTemplate.delete(key);
     }
 
+    public boolean hasKey(String key){
+        return Boolean.TRUE.equals(stringRedisTemplate.hasKey(key));
+    }
+
+    public Long incrementValue(String key){
+        return stringRedisTemplate.opsForValue().increment(key);
+    }
+
     public <T> void setObjectWithExpiry(
             String key,
             T object,
