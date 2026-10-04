@@ -1,8 +1,8 @@
 package com.ecom.service.auth;
 
 import com.ecom.dto.auth.LoginRequest;
-import com.ecom.dto.auth.RegisterRequest;
-import com.ecom.exceptions.auth.EmailAlreadyExistsException;
+import com.ecom.dto.auth.PendingSignup;
+import com.ecom.dto.auth.SendOtpRequest;
 import com.ecom.exceptions.auth.InvalidCredentialsException;
 import com.ecom.exceptions.auth.PhoneAlreadyExistsException;
 import com.ecom.exceptions.auth.PhoneNotVerifiedException;
@@ -18,59 +18,104 @@ import java.util.Optional;
 
 @Service
 public class UserService {
+
     private final UserRepository userRepository;
-    private  final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
     private final OtpRepository otpRepository;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder , OtpRepository otpRepository) {
+    public UserService(
+            UserRepository userRepository,
+            PasswordEncoder passwordEncoder,
+            OtpRepository otpRepository) {
+
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.otpRepository = otpRepository;
     }
 
-    public User register(RegisterRequest registerRequest) {
-        if (userRepository.existsByEmail(registerRequest.getEmail())) {
-            throw new EmailAlreadyExistsException("Email already exists");
-        }else if(userRepository.existsByPhone(registerRequest.getPhone())){
-            throw new PhoneAlreadyExistsException("Phone already exists");
+    public PendingSignup pendingSignup(SendOtpRequest sendOtpRequest) {
+
+
+        if (sendOtpRequest.getPhone() == null ||
+                sendOtpRequest.getPhone().isBlank()) {
+            throw new IllegalArgumentException("Phone is required");
         }
-        String hashedPassword =  passwordEncoder.encode(registerRequest.getPassword());
-        LocalDateTime now = LocalDateTime.now();
 
+        if (sendOtpRequest.getPassword() == null ||
+                sendOtpRequest.getPassword().isBlank()) {
+            throw new IllegalArgumentException("Password is required");
+        }
+        String hashedPassword =
+                passwordEncoder.encode(sendOtpRequest.getPassword());
 
-        User user = new User();
-        user.setName(registerRequest.getName());
-        user.setEmail(registerRequest.getEmail());
-        user.setPassword(hashedPassword);
-        user.setPhone(registerRequest.getPhone());
-        user.setEmailVerified(false);
-        user.setPhoneVerified(false);
-        user.setRoles(List.of("USER"));
-        user.setEnabled(true);
-        user.setCreatedAt(now);
-        user.setUpdatedAt(now);
-        return userRepository.save(user);
+        PendingSignup pendingSignup = new PendingSignup();
 
 
 
+        pendingSignup.setPhone(sendOtpRequest.getPhone());
+        pendingSignup.setPassword(hashedPassword);
+
+        return pendingSignup;
     }
 
+    public void createUser(PendingSignup pendingSignup) {
 
-    public User login(LoginRequest loginRequest){
-        Optional<User> user = userRepository.findByPhone(loginRequest.getPhone());
-      String rawPassword =   loginRequest.getPassword();
-
-        if (user.isEmpty()){
-           throw new InvalidCredentialsException("Invalid phone or password");
-        }  if ( !passwordEncoder.matches(rawPassword , user.get().getPassword())){
-           throw new InvalidCredentialsException("Invalid phone or password");
-
+        if (userRepository.existsByPhone(pendingSignup.getPhone())) {
+            throw new PhoneAlreadyExistsException(
+                    "Phone already registered. Please login or use forgot password."
+            );
         }
 
-        if (!user.get().isPhoneVerified()){
-            throw new PhoneNotVerifiedException("Phone not verified");
+        LocalDateTime now = LocalDateTime.now();
+
+        User user = new User();
+
+        user.setPhone(pendingSignup.getPhone());
+        user.setPassword(pendingSignup.getPassword());
+
+        user.setName(null);
+        user.setEmail(null);
+
+        user.setEmailVerified(false);
+        user.setPhoneVerified(true);
+
+        user.setRoles(List.of("USER"));
+        user.setEnabled(true);
+
+        user.setCreatedAt(now);
+        user.setUpdatedAt(now);
+
+       userRepository.save(user);
+    }
+
+    public User login(LoginRequest loginRequest) {
+
+        Optional<User> user =
+                userRepository.findByPhone(loginRequest.getPhone());
+
+        String rawPassword = loginRequest.getPassword();
+
+        if (user.isEmpty()) {
+            throw new InvalidCredentialsException(
+                    "Invalid phone or password"
+            );
         }
+
+        if (!passwordEncoder.matches(
+                rawPassword,
+                user.get().getPassword())) {
+
+            throw new InvalidCredentialsException(
+                    "Invalid phone or password"
+            );
+        }
+
+        if (!user.get().isPhoneVerified()) {
+            throw new PhoneNotVerifiedException(
+                    "Phone not verified"
+            );
+        }
+
         return user.get();
-
     }
 }

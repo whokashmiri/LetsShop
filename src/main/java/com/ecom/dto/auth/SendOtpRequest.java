@@ -7,5 +7,6 @@ import lombok.Setter;
 @Getter
 public class SendOtpRequest {
   private   String phone;
+  private  String password;
 
 }

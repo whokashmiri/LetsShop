@@ -1,64 +1,62 @@
 package com.ecom.controller.auth;
 
 import com.ecom.dto.auth.LoginRequest;
-import com.ecom.dto.auth.RegisterRequest;
 import com.ecom.dto.auth.SendOtpRequest;
 import com.ecom.dto.auth.VerifyOtpRequest;
 import com.ecom.models.auth.User;
 import com.ecom.service.JwtService;
-import com.ecom.service.auth.AuthenticaService;
 import com.ecom.service.auth.OtpService;
 import com.ecom.service.auth.UserService;
-import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
+
     private final UserService userService;
     private final OtpService otpService;
     private final JwtService jwtService;
-    private final AuthenticaService authenticaService;
 
+    public AuthController(
+            UserService userService,
+            OtpService otpService,
+            JwtService jwtService) {
 
-    public AuthController(UserService userService,
-                          OtpService otpService ,
-                          JwtService jwtService,
-                          AuthenticaService authenticaService
-    ){
         this.userService = userService;
         this.otpService = otpService;
         this.jwtService = jwtService;
-        this.authenticaService = authenticaService;
     }
-    @PostMapping("/register")
-    public ResponseEntity<String> create(@Valid  @RequestBody RegisterRequest  registerRequest){
-       User saved =  userService.register(registerRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Account create successfully");
-    }
-    @PostMapping("/send-otp")
-    public void sendOtp(@RequestBody SendOtpRequest sendOtpRequest){
-       authenticaService.sendOtp(sendOtpRequest.getPhone());
-//    return  ResponseEntity.ok(otp);
 
+    @PostMapping("/send-otp")
+    public ResponseEntity<String> sendOtp(
+            @RequestBody SendOtpRequest sendOtpRequest) {
+
+        otpService.sendOtp(sendOtpRequest);
+
+        return ResponseEntity.ok("OTP sent successfully");
     }
 
     @PostMapping("/verify-otp")
-    public ResponseEntity<String> verifyOtp(@RequestBody VerifyOtpRequest verifyOtpRequest){
-        authenticaService.verifyOtp(verifyOtpRequest.getPhone() , verifyOtpRequest.getOtp());
-        return ResponseEntity.ok("OTP Verified");
+    public ResponseEntity<String> verifyOtp(
+            @RequestBody VerifyOtpRequest verifyOtpRequest) {
+
+        otpService.verifyOtp(
+                verifyOtpRequest.getPhone(),
+                verifyOtpRequest.getOtp()
+        );
+
+        return ResponseEntity.ok("Account created successfully");
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest){
-      User user =   userService.login(loginRequest);
-        String token =  jwtService.generateToken(user);
+    public ResponseEntity<String> login(
+            @RequestBody LoginRequest loginRequest) {
+
+        User user = userService.login(loginRequest);
+
+        String token = jwtService.generateToken(user);
+
         return ResponseEntity.ok(token);
-
     }
-
-
-
 }

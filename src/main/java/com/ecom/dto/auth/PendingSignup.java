@@ -5,9 +5,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class LoginRequest {
-    private String  phone;
+public class PendingSignup {
+    private String phone;
     private String password;
-
 
 }
