@@ -2,6 +2,8 @@ package com.ecom.service.auth;
 
 import com.ecom.dto.auth.PendingSignup;
 import com.ecom.dto.auth.SendOtpRequest;
+import com.ecom.exceptions.auth.OtpCoolDownException;
+import com.ecom.exceptions.auth.OtpRateLimitException;
 import com.ecom.exceptions.auth.PhoneAlreadyExistsException;
 import com.ecom.exceptions.auth.InvalidOtpException;
 import com.ecom.models.auth.User;
@@ -54,7 +56,7 @@ public class OtpService {
 
         String cooldownKey = COOLDOWN_PREFIX  +  phone;
         if (redisService.hasKey(cooldownKey)){
-            throw new IllegalStateException("Please wait before requesting another OTP");
+            throw new OtpCoolDownException("Please wait before requesting another OTP");
         }
 
         String rateLimitKey = RATE_LIMIT_PREFIX  + phone;
@@ -65,7 +67,7 @@ public class OtpService {
        }
 
        if (requestCount > MAX_OTP_REQUESTS){
-           throw  new IllegalStateException("Too many OTP request, Please try after some time");
+           throw  new OtpRateLimitException("Too many OTP request, Please try after some time");
        }
 
         PendingSignup pendingSignup =

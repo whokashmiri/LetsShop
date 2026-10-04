@@ -67,5 +67,14 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleOrderNotFoundException(OrderNotFoundException orderNotFoundException){
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(orderNotFoundException.getMessage());
     }
+    @ExceptionHandler(OtpCoolDownException.class)
+    public  ResponseEntity<String> handleOtpCoolDownException(OtpCoolDownException otpCoolDownException){
+        return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).body(otpCoolDownException.getMessage());
+    }
+
+    @ExceptionHandler(OtpRateLimitException .class)
+    public ResponseEntity<String> handleOtpRateLimitException(OtpRateLimitException  otpRateLimitException){
+        return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).body(otpRateLimitException.getMessage())
+    }
 
 }
