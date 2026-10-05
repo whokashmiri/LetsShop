@@ -74,7 +74,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(OtpRateLimitException .class)
     public ResponseEntity<String> handleOtpRateLimitException(OtpRateLimitException  otpRateLimitException){
-        return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).body(otpRateLimitException.getMessage())
+        return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).body(otpRateLimitException.getMessage());
     }
 
 }
