@@ -1,5 +1,6 @@
 package com.ecom.config;
 
+import com.ecom.dto.order.OrderCreatedEvent;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -12,6 +13,7 @@ import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
+import tools.jackson.databind.annotation.JsonSerialize;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +26,7 @@ public class KafkaConfig {
     // -----------------------------
 
     @Bean
-    public ProducerFactory<String, String> producerFactory() {
+    public ProducerFactory<String, OrderCreatedEvent> producerFactory() {
 
         Map<String, Object> config = new HashMap<>();
 
@@ -40,15 +42,15 @@ public class KafkaConfig {
 
         config.put(
                 ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
-                StringSerializer.class
+                JsonSerialize.class
         );
 
         return new DefaultKafkaProducerFactory<>(config);
     }
 
     @Bean
-    public KafkaTemplate<String, String> kafkaTemplate(
-            ProducerFactory<String, String> producerFactory) {
+    public KafkaTemplate<String, OrderCreatedEvent> kafkaTemplate(
+            ProducerFactory<String, OrderCreatedEvent> producerFactory) {
 
         return new KafkaTemplate<>(producerFactory);
     }

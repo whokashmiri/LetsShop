@@ -1,5 +1,6 @@
 package com.ecom.service.order;
 
+import com.ecom.dto.order.OrderCreatedEvent;
 import com.ecom.dto.order.OrderResponse;
 import com.ecom.dto.order.OrderItemRequest;
 import com.ecom.dto.order.OrderRequest;
@@ -15,6 +16,7 @@ import com.ecom.models.order.PaymentStatus;
 import com.ecom.models.product.Product;
 import com.ecom.repository.order.OrderRepository;
 import com.ecom.repository.product.ProductRepository;
+import com.ecom.service.kafka.OrderProducer;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -28,9 +30,15 @@ import java.util.List;
 public class OrderService {
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
-    public OrderService(OrderRepository orderRepository ,  ProductRepository productRepository){
+    private final OrderProducer orderProducer;
+
+    public OrderService(OrderRepository orderRepository ,
+                        ProductRepository productRepository,
+                        OrderProducer orderProducer){
         this.orderRepository = orderRepository;
         this.productRepository = productRepository;
+        this.orderProducer = orderProducer;
+
     }
 
     public OrderResponse createOrder(OrderRequest orderRequest) {
@@ -90,6 +98,15 @@ public class OrderService {
         order.setCreatedAt(now);
         order.setUpdatedAt(now);
         orderRepository.save(order);
+        OrderCreatedEvent orderCreatedEvent = new OrderCreatedEvent();
+
+        orderCreatedEvent.setEventType("ORDER_CREATED");
+        orderCreatedEvent.setOrderId(order.getId());
+        orderCreatedEvent.setUserId(order.getUserId());
+        orderCreatedEvent.setTotalAmount(order.getTotalAmount());
+
+        orderProducer.sendOrderCreated(orderCreatedEvent);
+
 
         OrderResponse response = new OrderResponse();
 
