@@ -13,6 +13,7 @@ import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
+import org.springframework.kafka.support.serializer.JacksonJsonDeserializer;
 import tools.jackson.databind.annotation.JsonSerialize;
 
 import java.util.HashMap;
@@ -60,8 +61,9 @@ public class KafkaConfig {
     // CONSUMER
     // -----------------------------
 
+
     @Bean
-    public ConsumerFactory<String, String> consumerFactory() {
+    public ConsumerFactory<String, OrderCreatedEvent> consumerFactory() {
 
         Map<String, Object> config = new HashMap<>();
 
@@ -82,18 +84,25 @@ public class KafkaConfig {
 
         config.put(
                 ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG,
-                StringDeserializer.class
+                JacksonJsonDeserializer.class
         );
 
-        return new DefaultKafkaConsumerFactory<>(config);
+        JacksonJsonDeserializer<OrderCreatedEvent> jsonDeserializer =
+                new JacksonJsonDeserializer<>(OrderCreatedEvent.class);
+
+        return new DefaultKafkaConsumerFactory<>(
+                config,
+                new StringDeserializer(),
+                jsonDeserializer
+        );
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, String>
+    public ConcurrentKafkaListenerContainerFactory<String, OrderCreatedEvent>
     kafkaListenerContainerFactory(
-            ConsumerFactory<String, String> consumerFactory) {
+            ConsumerFactory<String, OrderCreatedEvent> consumerFactory) {
 
-        ConcurrentKafkaListenerContainerFactory<String, String> factory =
+        ConcurrentKafkaListenerContainerFactory<String, OrderCreatedEvent> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
 
         factory.setConsumerFactory(consumerFactory);
