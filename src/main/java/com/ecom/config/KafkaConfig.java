@@ -14,7 +14,8 @@ import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.support.serializer.JacksonJsonDeserializer;
-import tools.jackson.databind.annotation.JsonSerialize;
+import org.springframework.kafka.support.serializer.JacksonJsonSerializer;
+
 
 import java.util.HashMap;
 import java.util.Map;
@@ -43,7 +44,7 @@ public class KafkaConfig {
 
         config.put(
                 ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
-                JsonSerialize.class
+                JacksonJsonSerializer.class
         );
 
         return new DefaultKafkaProducerFactory<>(config);
