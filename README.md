@@ -229,21 +229,23 @@ src/main/java/com/ecom
 
 # 🛠️ Technology Stack
 
-| Technology          | Purpose                        |
-| ------------------- | ------------------------------ |
-| Java 21             | Programming language           |
-| Spring Boot         | Backend framework              |
-| Spring Web          | REST API development           |
-| Spring Security     | Authentication & authorization |
-| JWT                 | Stateless authentication       |
-| Spring Data MongoDB | MongoDB integration            |
-| MongoDB             | Database                       |
-| Lombok              | Boilerplate reduction          |
-| Jakarta Validation  | Request validation             |
-| RestClient          | External API communication     |
-| Moyasar             | Payment processing             |
-| Maven               | Dependency management          |
-| Git & GitHub        | Version control                |
+| Technology          | Purpose                         |
+| ------------------- | ------------------------------  |
+| Java 21             | Programming language            |
+| Spring Boot         | Backend framework               |
+| Spring Web          | REST API development            |
+| Spring Security     | Authentication & authorization  |
+| JWT                 | Stateless authentication        |
+| Spring Data MongoDB | MongoDB integration             |
+| MongoDB             | Database                        |
+| Lombok              | Boilerplate reduction           |
+| Jakarta Validation  | Request validation              |
+| RestClient          | External API communication      |
+| Moyasar             | Payment processing              |
+| Maven               | Dependency management           |
+| Git & GitHub        | Version control                 |
+| Redis               | In memory management            |
+| Kafka               | Event streaming between services|
 
 ---
 
@@ -496,6 +498,8 @@ Make sure you have installed:
 * Maven
 * MongoDB
 * Git
+* Redis
+* Kafka
 
 You also need a Moyasar test account/API credentials for payment testing.
 
@@ -715,8 +719,8 @@ Planned improvements include:
 
 ### Core Features
 
-| Feature                | Status |
-| ---------------------- | ------ |
+| Feature                | Status  |
+| ---------------------- | ------  |
 | User Authentication    | ✅      |
 | JWT Security           | ✅      |
 | Products               | ✅      |
@@ -731,13 +735,14 @@ Planned improvements include:
 | Payment Verification   | ✅      |
 | Stock Reduction        | ✅      |
 | Cart Cleanup           | ✅      |
-| Redis                  | ✅     |
-| Admin Order Management | 🚧     |
-| Wishlist               | 🚧     |
-| Coupons                | 🚧     |
-| Notifications          | 🚧     |
-| Automated Tests        | 🚧     |
-| CI/CD                  | 🚧     |
+| Redis                  | ✅      |
+| Kafka                  | ✅      |
+| Admin Order Management | 🚧      |
+| Wishlist               | 🚧      |
+| Coupons                | 🚧      |
+| Notifications          | 🚧      |
+| Automated Tests        | 🚧      |
+| CI/CD                  | 🚧      |
 
 ---
 
@@ -765,6 +770,7 @@ This project was built to gain practical experience with:
 * Secure configuration
 * Git/GitHub
 * Redis
+* Kafka
 
 ---
 
